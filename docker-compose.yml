@@ -1,0 +1,33 @@
+version: '3'
+services:
+    web:
+        container_name: web.waste-control
+        image: "webdevops/php-nginx-dev:8.0-alpine"
+        user: application
+        working_dir: /app
+        volumes:
+            - .:/app
+            - ~/.composer:/home/application/.composer
+            - ~/.symfony:/home/application/.symfony
+        restart: unless-stopped
+        environment:
+            WEB_DOCUMENT_ROOT: "/app/public"
+            WEB_DOCUMENT_INDEX: "index.php"
+            PHP_DATE_TIMEZONE: "UTC"
+            COMPOSER_MEMORY_LIMIT: "-1"
+        ports:
+            - "8090:80"
+
+    db:
+        container_name: db.waste-control
+        image: "postgres:latest"
+        volumes:
+            - postgres:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_USER=user
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_DB=waste_control
+            - POSTGRES_INITDB_ARGS="--encoding=UTF8"
+        restart: unless-stopped
+volumes:
+    postgres: ~
