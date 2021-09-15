@@ -1,22 +1,51 @@
 version: '3'
 services:
-    web:
-        container_name: web.waste-control
-        image: "webdevops/php-nginx-dev:8.0-alpine"
-        user: application
-        working_dir: /app
+    app:
+        container_name: app.waste-control
+        image: "nginx:alpine"
         volumes:
-            - .:/app
+            - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./build:/var/www/web.waste-control:ro
+            - ./api:/var/www/api.waste-control
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "81:81"
+        links:
+            - php
+
+    php:
+        container_name: php.waste-control
+        build:
+            dockerfile: ../docker/php.dockerfile
+            context: ./api
+        user: application
+        working_dir: /var/www/api.waste-control
+        volumes:
+            - ./api:/var/www/api.waste-control
             - ~/.composer:/home/application/.composer
-            - ~/.symfony:/home/application/.symfony
+            - ./docker/fpm.conf:/usr/local/etc/php-fpm.d/www.conf:ro
         restart: unless-stopped
         environment:
-            WEB_DOCUMENT_ROOT: "/app/public"
-            WEB_DOCUMENT_INDEX: "index.php"
-            PHP_DATE_TIMEZONE: "UTC"
             COMPOSER_MEMORY_LIMIT: "-1"
         ports:
-            - "8090:80"
+            - "9000:9000"
+        links:
+            - db
+
+    node:
+        container_name: node.waste-control
+        build:
+            dockerfile: ../docker/nodejs.dockerfile
+            context: ./web
+        user: node
+        working_dir: /app
+        volumes:
+            - ./web:/app
+#            - ~/.composer:/home/application/.composer
+        entrypoint: ["yarn", "serve"]
+        ports:
+            - "8080:8080"
 
     db:
         container_name: db.waste-control
@@ -29,5 +58,6 @@ services:
             - POSTGRES_DB=waste_control
             - POSTGRES_INITDB_ARGS="--encoding=UTF8"
         restart: unless-stopped
+
 volumes:
     postgres: ~
