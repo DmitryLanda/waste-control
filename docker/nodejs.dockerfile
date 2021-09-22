@@ -1,3 +1,6 @@
 FROM node:alpine
 
-RUN npm install -g @vue/cli
+RUN yarn global add @vue/cli
+
+#ENTRYPOINT ["yarn", "serve"]
+EXPOSE 8080

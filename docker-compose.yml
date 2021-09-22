@@ -43,7 +43,6 @@ services:
         volumes:
             - ./web:/app
 #            - ~/.composer:/home/application/.composer
-        entrypoint: ["yarn", "serve"]
         ports:
             - "8080:8080"
 
