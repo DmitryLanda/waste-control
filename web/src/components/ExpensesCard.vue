@@ -1,12 +1,12 @@
 <template>
-  <a-card :bordered="false" class="expense-card" :loading="loading">
-    <a slot="title" href="#" class="expense-card-title">{{ title }}</a>
-    <a-button type="primary" slot="extra" href="#" v-if="add" @click="dispatchExpenseCreation">
-      <a-icon type="plus" />
-    </a-button>
-    <w-money :value="total"/>
-    <w-category-stats :categories="categories" :values="values" height="30vh"/>
-  </a-card>
+    <a-card :loading="loading" :bordered="false" class="expense-card">
+      <a slot="title" class="expense-card-title" href="#">{{ title }}</a>
+      <a-button v-if="add && !loading" slot="extra" href="#" type="primary" @click="dispatchExpenseCreation">
+        <a-icon type="plus"/>
+      </a-button>
+      <w-money :value="total" :type="total >= 0 ? 'up' : 'down'"/>
+      <w-category-stats :categories="categories" :values="values" height="30vh"/>
+    </a-card>
 </template>
 
 <script>
@@ -24,12 +24,10 @@ export default {
     add: Boolean,
     loading: Boolean
   },
-  data() {
-    return {
-      title: this.data?.title,
-    }
-  },
   computed: {
+    title() {
+      return this.data?.title
+    },
     categories() {
       return Object.keys(this.data?.values || [])
     },
@@ -50,6 +48,7 @@ export default {
 
 <style lang="less">
   .expense-card {
+    height: 310px;
     .ant-card-head {
       min-height: 35px;
       font-size: 14px;

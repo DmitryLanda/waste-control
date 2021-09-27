@@ -1,45 +1,40 @@
-import moment from "moment";
-
-const categories = (limit = 5) => {
-    const list = [
-        'Кино',
-        'Бар',
-        'Авто',
-        'Проезд',
-        'Кафе',
-        'Одежда',
-        'Продукты',
-    ]
-    list.sort(() => (Math.random() > .5) ? 1 : -1);
-
-    const obj = {}
-    list.slice(0, limit).forEach((category) => obj[category] = Math.ceil(Math.random() * 1000))
-
-    return obj
-}
+import api from "./api";
+import Notifications from "./notifications";
 
 export default {
-    async expensesForToday() {
-        return await (new Promise((resolve, reject) => {
-            setTimeout(() => resolve({
-                title: moment().format('D MMMM'),
-                values: categories(3)
-            }), 1000)
-        }));
-    },
-    expensesForWeek() {
-        const monday = moment().startOf('week').format('D')
-        const saturday = moment().endOf('week').format('D MMMM')
+    async addExpense(expense) {
+        try {
+            await api.post('/expenses', {
+                category: expense.category,
+                value: expense.amount,
+                date: expense.date.format('YYYY-MM-DD')
+            })
 
-        return {
-            title: `${monday} - ${saturday}`,
-            values: categories(7)
-        }
-    },
-    expensesForMonth() {
-        return {
-            title: moment().format('MMMM'),
-            values: categories(10)
+            return true
+        } catch (e) {
+            const resp = e.response.data
+            switch (e.response.status) {
+                case 400:
+                    Notifications.error(resp.message, 'Неверный запрос')
+                    break
+                case 401:
+                    Notifications.error(resp.message, 'Ошибка доступа')
+                    break
+                case 403:
+                    Notifications.error(resp.message, 'Ошибка доступа')
+                    break
+                case 422:
+                    Notifications.error(
+                        Object.values(resp.errors).reduce((_, e) => _ += e.join(';'), ''),
+                        resp.message
+                    )
+                    break
+                case 500:
+                    Notifications.error('Сервер недоступен или не отвечает', 'Сервер недоступен')
+                    break
+            }
+
+            return false
         }
     }
 }

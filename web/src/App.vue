@@ -7,11 +7,11 @@
           </a-col>
 
           <a-col :span="8" class="w-expenses-col">
-            <w-expenses-card :data="week"/>
+            <w-expenses-card :loading="!week" :data="week"/>
           </a-col>
 
           <a-col :span="8" class="w-expenses-col">
-            <w-expenses-card :data="month"/>
+            <w-expenses-card :loading="!month" :data="month"/>
           </a-col>
         </a-row>
         <a-row>
@@ -19,7 +19,7 @@
             <w-expenses-stats/>
           </a-col>
         </a-row>
-        <a-modal v-model="displayModal" title="Доход / Расход" @ok="addNewExpense">
+        <a-modal v-model="displayModal" title="Доход / Расход" @ok="addNewExpense" :ok-button-props="{ props: { disabled: expenseSaving } }">
           <w-add-expense ref="form"/>
         </a-modal>
       </div>
@@ -27,8 +27,6 @@
 </template>
 
 <script>
-  import moment from 'moment'
-  import 'moment/locale/ru'
   import ru_RU from 'ant-design-vue/lib/locale-provider/ru_RU'
 
   import ExpensesCard from './components/ExpensesCard.vue'
@@ -36,8 +34,7 @@
   import AddExpense from "./components/AddExpense"
 
   import Expenses from './services/expenses'
-
-  moment.locale('ru');
+  import Stats from './services/stats'
 
   export default {
     name: 'App',
@@ -49,36 +46,45 @@
     data() {
       return {
         ru_RU,
+
         displayModal: false,
+        expenseSaving: false,
+
         day: null,
+        week: null,
+        month: null,
       }
     },
     created() {
       this.loadData()
 
     },
-    computed: {
-      week: () => Expenses.expensesForWeek(),
-      month: () => Expenses.expensesForMonth()
-    },
     methods: {
-      async loadData() {
-        const day = await Expenses.expensesForToday()
-        this.day = day
-        console.log(this.day)
+      loadData() {
+        this.day = null;
+        Stats.expensesForToday().then(data => this.day = data)
+
+        this.week = null;
+        Stats.expensesForWeek().then(data => this.week = data)
+
+        this.month = null;
+        Stats.expensesForMonth().then(data => this.month = data)
       },
       displayExpenseCreationModal() {
-        alert('modal')
         this.displayModal = true
       },
-      addNewExpense(event) {
+      addNewExpense() {
         const data = this.$refs.form.submit()
-        console.log('form')
-        this.displayModal = false
+        this.expenseSaving = true
+        Expenses.addExpense(data).then(success => {
+          this.displayModal = false
+          this.expenseSaving = false
 
-        this.day = Expenses.expensesForToday()
-        this.week = Expenses.expensesForWeek()
-        this.month = Expenses.expensesForMonth()
+          if (success) {
+            this.$refs.form.reset()
+            this.loadData()
+          }
+        })
       }
     }
   }

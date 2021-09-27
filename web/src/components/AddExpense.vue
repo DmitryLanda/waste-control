@@ -7,6 +7,9 @@
       :wrapper-col="{ span: 18 }"
       class="w-add-expense"
   >
+    <a-form-model-item label="Причина" ref="comment" prop="comment">
+      <a-input v-model="form.comment"/>
+    </a-form-model-item>
     <a-form-model-item label="Дата" ref="date" prop="date">
       <a-date-picker v-model="form.date" />
     </a-form-model-item>
@@ -23,18 +26,20 @@
 
 <script>
 import moment from 'moment'
+import api from '../services/api'
 
 export default {
   name: "w-add-expense",
   data() {
     return {
-      form: {amount: null, category: null, date: moment()},
+      form: {amount: null, category: null, date: moment(), comment: null},
       rules: {
         date: [{ required: true, message: 'Выберите дату' }],
         amount: [{ required: true, message: 'Укажите сумму' }],
-        category: [{ required: true, message: 'Выберите категорию' }]
+        category: [{ required: true, message: 'Выберите категорию' }],
+        comment: []
       },
-      categories: ['Кино', 'Бар', 'Авто', 'Проезд', 'Кафе', 'Йцу', 'Ываа','длолд']
+      categories: []
     }
   },
   methods: {
@@ -44,8 +49,17 @@ export default {
       return this.form
     },
     reset() {
-      this.form = {amount: null, category: null, date: moment()}
+      this.$refs.form.resetFields()
+    },
+    async loadCategories() {
+      const { data } = await api.get('/categories')
+
+      return this.categories = data
     }
+
+  },
+  created() {
+    this.loadCategories()
   }
 }
 </script>
