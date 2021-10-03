@@ -3,7 +3,7 @@
       <div>
         <a-row>
           <a-col :span="8" class="w-expenses-col">
-            <w-expenses-card :loading="!day" :data="day" :add="true" @add-expense="displayExpenseCreationModal"/>
+            <w-expenses-card :loading="!day" :data="day" :add="true" @expenseAdded="loadData"/>
           </a-col>
 
           <a-col :span="8" class="w-expenses-col">
@@ -19,9 +19,6 @@
             <w-expenses-stats/>
           </a-col>
         </a-row>
-        <a-modal v-model="displayModal" title="Доход / Расход" @ok="addNewExpense" :ok-button-props="{ props: { disabled: expenseSaving } }">
-          <w-add-expense ref="form"/>
-        </a-modal>
       </div>
     </a-config-provider>
 </template>
@@ -31,9 +28,7 @@
 
   import ExpensesCard from './components/ExpensesCard.vue'
   import ExpensesStats from './components/ExpensesStats.vue'
-  import AddExpense from "./components/AddExpense"
 
-  import Expenses from './services/expenses'
   import Stats from './services/stats'
 
   export default {
@@ -41,14 +36,10 @@
     components: {
       'w-expenses-card': ExpensesCard,
       'w-expenses-stats': ExpensesStats,
-      'w-add-expense': AddExpense
     },
     data() {
       return {
         ru_RU,
-
-        displayModal: false,
-        expenseSaving: false,
 
         day: null,
         week: null,
@@ -69,22 +60,6 @@
 
         this.month = null;
         Stats.expensesForMonth().then(data => this.month = data)
-      },
-      displayExpenseCreationModal() {
-        this.displayModal = true
-      },
-      addNewExpense() {
-        const data = this.$refs.form.submit()
-        this.expenseSaving = true
-        Expenses.addExpense(data).then(success => {
-          this.displayModal = false
-          this.expenseSaving = false
-
-          if (success) {
-            this.$refs.form.reset()
-            this.loadData()
-          }
-        })
       }
     }
   }

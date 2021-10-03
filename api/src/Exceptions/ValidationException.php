@@ -2,10 +2,9 @@
 
 namespace App\Exceptions;
 
-use LogicException;
 use Symfony\Component\Form\FormErrorIterator;
 
-class ValidationException extends LogicException
+class ValidationException extends AppException
 {
     public function __construct(private FormErrorIterator $errors)
     {

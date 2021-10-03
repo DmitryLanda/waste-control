@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\AppException;
 use App\Exceptions\ValidationException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 
-class ValidationResponseTransformer implements EventSubscriberInterface
+class ErrorResponseTransformer implements EventSubscriberInterface
 {
     public function __construct(private SerializerInterface $serializer)
     {}
@@ -28,7 +29,7 @@ class ValidationResponseTransformer implements EventSubscriberInterface
 
     private function supports(Throwable $exception): bool
     {
-        return $exception instanceof ValidationException;
+        return $exception instanceof AppException;
     }
 
 

@@ -4,11 +4,7 @@ import Notifications from "./notifications";
 export default {
     async addExpense(expense) {
         try {
-            await api.post('/expenses', {
-                category: expense.category,
-                value: expense.amount,
-                date: expense.date.format('YYYY-MM-DD')
-            })
+            await api.post('/expenses', expense)
 
             return true
         } catch (e) {
@@ -24,10 +20,14 @@ export default {
                     Notifications.error(resp.message, 'Ошибка доступа')
                     break
                 case 422:
-                    Notifications.error(
-                        Object.values(resp.errors).reduce((_, e) => _ += e.join(';'), ''),
-                        resp.message
-                    )
+                    let message = resp.message
+                    let title = 'Ошибка'
+                    if (resp.errors) {
+                        message = Object.values(resp.errors).reduce((_, e) => _ += e.join(';'), '')
+                        title = resp.message
+                    }
+
+                    Notifications.error(message, title)
                     break
                 case 500:
                     Notifications.error('Сервер недоступен или не отвечает', 'Сервер недоступен')

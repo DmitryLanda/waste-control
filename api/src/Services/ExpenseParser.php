@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Entity\Expense;
+use App\Exceptions\ParseExpenseException;
 use DateTime;
 use DateTimeInterface;
-use Exception;
 use Throwable;
 
 class ExpenseParser
@@ -65,7 +65,7 @@ class ExpenseParser
         $tokensCount = count($tokens);
         switch (true) {
             case $tokensCount < 2:
-                throw new \Exception('bad input');
+                throw ParseExpenseException::badInput();
             case $tokensCount === 2:
                 $value = $tokens[0];
                 $category = $tokens[1];
@@ -99,7 +99,7 @@ class ExpenseParser
             return true;
         }
 
-        throw new Exception('wrong value');
+        throw ParseExpenseException::wrongValue();
     }
 
     private function validateCategory(?string $value): bool
@@ -108,7 +108,7 @@ class ExpenseParser
             return true;
         }
 
-        throw new Exception('wrong category');
+        throw ParseExpenseException::wrongCategory();
     }
 
     private function validateDate(DateTimeInterface $date): bool
@@ -119,7 +119,7 @@ class ExpenseParser
             return true;
         }
 
-        throw new Exception('date should be in past');
+        throw ParseExpenseException::dateInFuture();
     }
 
     private function parseDate(string $string): DateTimeInterface
@@ -145,7 +145,7 @@ class ExpenseParser
         try {
             return new DateTime($value);
         } catch (Throwable $e) {
-            throw new \Exception('wrong date');
+            throw ParseExpenseException::wrongDate($e);
         }
     }
 }
