@@ -36,6 +36,11 @@ class ExpenseRepository extends ServiceEntityRepository
             ;
         }
 
+        $qb->orderBy('e.createdAt', 'asc')
+            ->addOrderBy('e.category', 'asc')
+            ->addOrderBy('e.id', 'asc')
+        ;
+
         return $qb
             ->getQuery()
             ->getResult()

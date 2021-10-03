@@ -16,7 +16,7 @@
         </a-row>
         <a-row>
           <a-col :span="24" class="w-expenses-col-single">
-            <w-expenses-stats/>
+            <w-expenses-stats :loading="!year" :data="year"/>
           </a-col>
         </a-row>
       </div>
@@ -44,6 +44,7 @@
         day: null,
         week: null,
         month: null,
+        year: null,
       }
     },
     created() {
@@ -60,6 +61,9 @@
 
         this.month = null;
         Stats.expensesForMonth().then(data => this.month = data)
+
+        this.year = null;
+        Stats.expensesForYear().then(data => this.year = data)
       }
     }
   }

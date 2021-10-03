@@ -15,7 +15,7 @@ class StatsController extends AbstractController
         $start = (new DateTime())->setTime(0, 0, 0);
         $end = (new DateTime())->setTime(23, 59, 59);
 
-        return $this->json($service->statsForPeriod($start, $end));
+        return $this->json($service->statsForPeriodPerCategory($start, $end));
     }
 
     #[Route('/stats/week', name: 'stats.week')]
@@ -24,7 +24,7 @@ class StatsController extends AbstractController
         $start = (new DateTime('last monday'))->setTime(0, 0, 0);
         $end = (new DateTime('this sunday'))->setTime(23, 59, 59);
 
-        return $this->json($service->statsForPeriod($start, $end));
+        return $this->json($service->statsForPeriodPerCategory($start, $end));
     }
 
     #[Route('/stats/month', name: 'stats.month')]
@@ -33,6 +33,16 @@ class StatsController extends AbstractController
         $start = (new DateTime('first day of this month'))->setTime(0, 0, 0);
         $end = (new DateTime('last day of this month'))->setTime(23, 59, 59);
 
-        return $this->json($service->statsForPeriod($start, $end));
+        return $this->json($service->statsForPeriodPerCategory($start, $end));
+    }
+
+    #[Route('/stats/year', name: 'stats.year')]
+    public function year(StatisticService $service)
+    {
+        $year = (new DateTime())->format('Y');
+        $start = (new DateTime("$year-01-01"))->setTime(0, 0, 0);
+        $end = (new DateTime())->setTime(23, 59, 59);
+
+        return $this->json($service->statsForPeriodPerMonth($start, $end));
     }
 }

@@ -85,7 +85,7 @@ class ExpenseParser
                 break;
         }
 
-        return [$value, $category, $date];
+        return [(float) $value, trim(strtolower($category)), $date];
     }
 
     private function isMonthName(string $string): bool
@@ -95,7 +95,10 @@ class ExpenseParser
 
     private function validateValue(string $value): bool
     {
-        if (preg_match('/^(\-?\d+(\.\d+)?)$/', $value)) {
+        $isNumeric = (bool) preg_match('/^(\d+(\.\d+)?)$/', $value);
+        $isPositive = (float) $value > 0;
+
+        if ($isNumeric && $isPositive) {
             return true;
         }
 

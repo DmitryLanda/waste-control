@@ -4,7 +4,7 @@
       <a-button v-if="add && !loading" slot="extra" href="#" type="primary" @click="processExpenseCreation">
         <a-icon type="plus"/>
       </a-button>
-      <w-money :value="total" :type="total >= 0 ? 'up' : 'down'"/>
+      <w-money :value="total" type="down"/>
       <w-category-stats :categories="categories" :values="values" height="30vh"/>
 
       <a-modal

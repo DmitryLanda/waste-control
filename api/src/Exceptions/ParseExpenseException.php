@@ -13,7 +13,7 @@ class ParseExpenseException extends AppException
 
     public static function wrongValue(): self
     {
-        return new self('Сумма должна быть числом');
+        return new self('Сумма должна быть положительным числом');
     }
 
     public static function wrongCategory(): self

@@ -7,7 +7,7 @@ export default {
             const { data } = await api.get('/stats/today')
 
             return {
-                title: moment(data.end).format('D MMMM'),
+                title: moment(data.end).format('D MMMM, dddd'),
                 values: data.expenses
             }
         } catch (e) {
@@ -40,6 +40,21 @@ export default {
 
             return {
                 title: moment(data.end).format('MMMM'),
+                values: data.expenses
+            }
+        } catch (e) {
+            //
+        }
+    },
+    async expensesForYear() {
+        try {
+            const { data } = await api.get('/stats/year')
+
+            const start = moment(data.start).format('D MMMM')
+            const end = moment(data.end).format('D MMMM')
+
+            return {
+                title: `${start} - ${end}`,
                 values: data.expenses
             }
         } catch (e) {
