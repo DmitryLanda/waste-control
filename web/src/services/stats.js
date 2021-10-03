@@ -1,29 +1,10 @@
 import moment from "./moment";
 import api from "./api";
 
-const categories = (limit = 5) => {
-    const list = [
-        'Кино',
-        'Бар',
-        'Авто',
-        'Проезд',
-        'Кафе',
-        'Одежда',
-        'Продукты',
-    ]
-    list.sort(() => (Math.random() > .5) ? 1 : -1);
-
-    const obj = {}
-    list.slice(0, limit).forEach((category) => obj[category] = Math.ceil(Math.random() * 1000))
-
-    return obj
-}
-
 export default {
     async expensesForToday() {
         try {
             const { data } = await api.get('/stats/today')
-            console.log(data)
 
             return {
                 title: moment(data.end).format('D MMMM'),
@@ -37,8 +18,13 @@ export default {
         try {
             const { data } = await api.get('/stats/week')
 
-            const monday = moment(data.start).format('D')
-            const saturday = moment(data.end).format('D MMMM')
+            let monday = moment(data.start).format('D')
+            let saturday = moment(data.end).format('D MMMM')
+
+            //edge of month - we need to show names for both months
+            if (moment(data.start).format('M') !== moment(data.end).format('M')) {
+                monday = moment(data.start).format('D MMMM')
+            }
 
             return {
                 title: `${monday} - ${saturday}`,
