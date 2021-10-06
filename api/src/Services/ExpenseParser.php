@@ -76,10 +76,10 @@ class ExpenseParser
 
                 if ($this->isMonthName($tokens[2])) {
                     $date = $this->parseDate("{$tokens[1]} {$tokens[2]}");
-                    $category = $tokens[3] ?? null;
+                    $category = implode(' ', array_slice($tokens, 3));
                 } else {
                     $date = $this->parseDate($tokens[1]);
-                    $category = $tokens[2];
+                    $category = implode(' ', array_slice($tokens, 2));
                 }
 
                 break;
