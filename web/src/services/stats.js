@@ -52,9 +52,10 @@ export default {
 
             const start = moment(data.start).format('D MMMM')
             const end = moment(data.end).format('D MMMM')
+            const year = moment(data.end).format('YYYY')
 
             return {
-                title: `${start} - ${end}`,
+                title: `${start} - ${end} ${year} года`,
                 values: data.expenses
             }
         } catch (e) {
