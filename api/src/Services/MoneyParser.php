@@ -8,7 +8,7 @@ use DateTime;
 use DateTimeInterface;
 use Throwable;
 
-class ExpenseParser
+class MoneyParser
 {
     private const MONTHES = [
         'января' => 'january',
@@ -37,16 +37,9 @@ class ExpenseParser
         'воскресенье' => 'last sunday',
     ];
 
-    public function parse(string $expression): Expense
+    public function parseExpense(string $expression): Expense
     {
-        $expression = trim(strtolower($expression));
-
-        $tokens = $this->tokenize($expression);
-        [$value, $category, $date] = $this->normalize($tokens);
-
-        $this->validateValue($value);
-        $this->validateCategory($category);
-        $this->validateDate($date);
+        [$value, $category, $date] = $this->parseExpression($expression);
 
         return (new Expense())
             ->setValue($value)
@@ -93,28 +86,31 @@ class ExpenseParser
         return array_key_exists($string, self::MONTHES);
     }
 
-    private function validateValue(string $value): bool
+    private function shouldBeNumeric(string $value): void
     {
         $isNumeric = (bool) preg_match('/^(\d+(\.\d+)?)$/', $value);
+        if (!$isNumeric) {
+            throw ParseExpenseException::shouldBeNumeric();
+        }
+    }
+
+    private function shouldBePositive(string $value): void
+    {
         $isPositive = (float) $value > 0;
 
-        if ($isNumeric && $isPositive) {
-            return true;
+        if (!$isPositive) {
+            throw ParseExpenseException::shouldBePositive();
         }
-
-        throw ParseExpenseException::wrongValue();
     }
 
-    private function validateCategory(?string $value): bool
+    private function shouldNotBeEmpty(?string $value): void
     {
-        if (strlen($value) > 0) {
-            return true;
+        if (strlen($value) === 0) {
+            throw ParseExpenseException::stringIsEmpty();
         }
-
-        throw ParseExpenseException::wrongCategory();
     }
 
-    private function validateDate(DateTimeInterface $date): bool
+    private function dateShouldBeInPastOrNow(DateTimeInterface $date): bool
     {
         $now = new DateTime();
 
@@ -150,5 +146,27 @@ class ExpenseParser
         } catch (Throwable $e) {
             throw ParseExpenseException::wrongDate($e);
         }
+    }
+
+    /**
+     * @param string $expression
+     *
+     * @return array
+     */
+    private function parseExpression(string $expression): array
+    {
+        $expression = trim(strtolower($expression));
+
+        $tokens = $this->tokenize($expression);
+
+        $this->shouldBeNumeric($tokens[0]);
+        $this->shouldBePositive($tokens[0]);
+
+        [$value, $category, $date] = $this->normalize($tokens);
+
+        $this->shouldNotBeEmpty($category);
+        $this->dateShouldBeInPastOrNow($date);
+
+        return [$value, $category, $date];
     }
 }

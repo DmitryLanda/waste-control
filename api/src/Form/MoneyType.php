@@ -2,13 +2,13 @@
 
 namespace App\Form;
 
-use App\Dto\ExpenseRequest;
+use App\Dto\MoneyRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ExpenseType extends AbstractType
+class MoneyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -20,7 +20,7 @@ class ExpenseType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ExpenseRequest::class,
+            'data_class' => MoneyRequest::class,
         ]);
     }
 

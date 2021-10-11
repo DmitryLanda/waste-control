@@ -3,7 +3,7 @@
 namespace App\Tests\Service;
 
 use App\Entity\Expense;
-use App\Services\ExpenseParser;
+use App\Services\MoneyParser;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
@@ -15,9 +15,9 @@ class ExpenseParserTest extends TestCase
      */
     public function itParsesExpressionsInDifferentFormats(string $expression, array $expectations): void
     {
-        $service = new ExpenseParser();
+        $service = new MoneyParser();
 
-        $expense = $service->parse($expression);
+        $expense = $service->parseExpense($expression);
 
         [$value, $category, $date] = $expectations;
 
@@ -47,8 +47,8 @@ class ExpenseParserTest extends TestCase
     {
         self::expectException(\Exception::class);
 
-        $service = new ExpenseParser();
-        $service->parse($expression);
+        $service = new MoneyParser();
+        $service->parseExpense($expression);
     }
 
     public function badInputDataProvider(): array

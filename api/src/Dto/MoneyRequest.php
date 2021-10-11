@@ -4,7 +4,7 @@ namespace App\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ExpenseRequest
+class MoneyRequest
 {
     #[Assert\NotBlank(message: 'Введите данные')]
     public ?string $expression = null;

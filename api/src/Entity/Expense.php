@@ -45,7 +45,7 @@ class Expense
 
     public function setValue(string $value): self
     {
-        $this->value = $value;
+        $this->value = abs($value);
 
         return $this;
     }
@@ -69,7 +69,7 @@ class Expense
 
     public function setCategory(string $category): self
     {
-        $this->category = $category;
+        $this->category = strtolower($category);
 
         return $this;
     }

@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Dto\ExpenseRequest;
+use App\Dto\MoneyRequest;
 use App\Exceptions\ValidationException;
-use App\Form\ExpenseType;
+use App\Form\MoneyType;
 use App\Services\ExpensesService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +16,8 @@ class ExpenseController extends AbstractController
     #[Route('/expenses', name: 'expenses.add')]
     public function addExpense(Request $request, ExpensesService $service): Response
     {
-        $data = new ExpenseRequest();
-        $form = $this->createForm(ExpenseType::class, $data);
+        $data = new MoneyRequest();
+        $form = $this->createForm(MoneyType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
