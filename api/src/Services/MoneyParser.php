@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Entity\Expense;
+use App\Entity\MoneyTransaction;
 use App\Exceptions\ParseExpenseException;
 use DateTime;
 use DateTimeInterface;
@@ -37,11 +37,11 @@ class MoneyParser
         'воскресенье' => 'last sunday',
     ];
 
-    public function parseExpense(string $expression): Expense
+    public function parseTransaction(string $expression): MoneyTransaction
     {
         [$value, $category, $date] = $this->parseExpression($expression);
 
-        return (new Expense())
+        return (new MoneyTransaction())
             ->setValue($value)
             ->setCategory($category)
             ->setCreatedAt($date)
@@ -88,18 +88,9 @@ class MoneyParser
 
     private function shouldBeNumeric(string $value): void
     {
-        $isNumeric = (bool) preg_match('/^(\d+(\.\d+)?)$/', $value);
+        $isNumeric = (bool) preg_match('/^(\-?\d+(\.\d+)?)$/', $value);
         if (!$isNumeric) {
             throw ParseExpenseException::shouldBeNumeric();
-        }
-    }
-
-    private function shouldBePositive(string $value): void
-    {
-        $isPositive = (float) $value > 0;
-
-        if (!$isPositive) {
-            throw ParseExpenseException::shouldBePositive();
         }
     }
 
@@ -160,7 +151,6 @@ class MoneyParser
         $tokens = $this->tokenize($expression);
 
         $this->shouldBeNumeric($tokens[0]);
-        $this->shouldBePositive($tokens[0]);
 
         [$value, $category, $date] = $this->normalize($tokens);
 

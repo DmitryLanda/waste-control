@@ -2,7 +2,7 @@
 
 namespace App\Tests\Service;
 
-use App\Entity\Expense;
+use App\Entity\MoneyTransaction;
 use App\Services\MoneyParser;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -17,11 +17,11 @@ class ExpenseParserTest extends TestCase
     {
         $service = new MoneyParser();
 
-        $expense = $service->parseExpense($expression);
+        $expense = $service->parseTransaction($expression);
 
         [$value, $category, $date] = $expectations;
 
-        self::assertInstanceOf(Expense::class, $expense);
+        self::assertInstanceOf(MoneyTransaction::class, $expense);
         self::assertEquals($value, $expense->getValue());
         self::assertEquals($category, $expense->getCategory());
         self::assertEquals($date->format('Y-m-d'), $expense->getCreatedAt()->format('Y-m-d'));
@@ -48,7 +48,7 @@ class ExpenseParserTest extends TestCase
         self::expectException(\Exception::class);
 
         $service = new MoneyParser();
-        $service->parseExpense($expression);
+        $service->parseTransaction($expression);
     }
 
     public function badInputDataProvider(): array

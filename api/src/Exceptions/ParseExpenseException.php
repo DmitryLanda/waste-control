@@ -11,12 +11,6 @@ class ParseExpenseException extends AppException
         throw new self('Данные должны быть в виде "<сумма> <дата> <категория>"');
     }
 
-    public static function shouldBePositive(): self
-    {
-        return new self('Сумма должна быть положительным числом');
-    }
-
-
     public static function shouldBeNumeric(): self
     {
         return new self('Сумма должна быть числом');

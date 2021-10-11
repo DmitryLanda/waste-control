@@ -2,15 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\ExpenseRepository;
+use App\Repository\MoneyTransactionRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ExpenseRepository::class)
+ * @ORM\Table(name="money_transactions")
  */
-class Expense
+class MoneyTransaction
 {
+    public const TYPE_INCOME = 'income';
+    public const TYPE_EXPENSE = 'expense';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -32,6 +36,11 @@ class Expense
      * @ORM\Column(type="string", length=255)
      */
     private string $category;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $type = self::TYPE_EXPENSE;
 
     public function getId(): ?int
     {
@@ -70,6 +79,18 @@ class Expense
     public function setCategory(string $category): self
     {
         $this->category = strtolower($category);
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
