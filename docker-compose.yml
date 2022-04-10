@@ -28,8 +28,6 @@ services:
         restart: unless-stopped
         environment:
             COMPOSER_MEMORY_LIMIT: "-1"
-        ports:
-            - "9000:9000"
         links:
             - db
 
@@ -57,6 +55,8 @@ services:
             - POSTGRES_DB=waste_control
             - POSTGRES_INITDB_ARGS="--encoding=UTF8"
         restart: unless-stopped
+        ports:
+            - "5432:5432"
 
 volumes:
     postgres: ~

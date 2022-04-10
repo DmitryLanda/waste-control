@@ -1,4 +1,4 @@
-FROM php:8-fpm-alpine
+FROM php:8.1-fpm-alpine
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --quiet && \

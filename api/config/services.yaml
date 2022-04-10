@@ -19,7 +19,39 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Money\Infrastructure\AccountRepository:
+        $aggregateRootClassName: 'App\Money\Domain\Account'
+        $messageRepository: '@account.message_repository'
+        $snapshotRepository: '@account.snapshot_repository'
+        $aggregateRootRepository: '@account.aggregate_root_repository'
+
+    EventSauce\UuidEncoding\UuidEncoder:
+        class: EventSauce\UuidEncoding\StringUuidEncoder
+
+    EventSauce\EventSourcing\Serialization\MessageSerializer:
+         class: EventSauce\EventSourcing\Serialization\ConstructingMessageSerializer
+
+    account.snapshot_repository:
+         class: App\Shared\Snapshot\DoctrineSnapshotRepository
+         arguments:
+             $aggregateIdClass: 'App\Money\Domain\AccountId'
+             $tableName: 'account_snapshots'
+
+    account.aggregate_root_repository:
+         class: EventSauce\EventSourcing\EventSourcedAggregateRootRepository
+         arguments:
+             $aggregateRootClassName: 'App\Money\Domain\Account'
+             $messageRepository: '@account.message_repository'
+
+    account.message_repository:
+        class: EventSauce\MessageRepository\DoctrineMessageRepository\DoctrineUuidV4MessageRepository
+        arguments:
+            $tableName: 'account_events'
+
+    App\Shared\ParamConverter\JsonConverter:
+        tags:
+            - { name: 'request.param_converter', converter: 'json_converter' }
