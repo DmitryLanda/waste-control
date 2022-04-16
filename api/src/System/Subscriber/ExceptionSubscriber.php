@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
@@ -19,7 +20,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
         // return the subscribed events, their methods and priorities
         return [
             KernelEvents::EXCEPTION => [
-                ['convertIntoJsonResponse', 1],
+                ['convertIntoJsonResponse', 1000],
             ],
         ];
     }
@@ -33,6 +34,9 @@ class ExceptionSubscriber implements EventSubscriberInterface
         $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
 
         switch (true) {
+            case $exception instanceof HttpException:
+                $statusCode = $exception->getStatusCode();
+                break;
             case $exception instanceof NotNormalizableValueException:
                 $content = [
                     'property' => $exception->getPath(),

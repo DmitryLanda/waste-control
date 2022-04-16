@@ -28,6 +28,7 @@ services:
         restart: unless-stopped
         environment:
             COMPOSER_MEMORY_LIMIT: "-1"
+            SHELL_VERBOSITY: "0"
         links:
             - db
 
