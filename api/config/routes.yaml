@@ -1,3 +1,6 @@
+user:
+    resource: ../src/User/config/routes.yaml
+
 money:
     resource: ../src/Money/config/routes.yaml
 

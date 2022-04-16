@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 
 class ExceptionSubscriber implements EventSubscriberInterface
@@ -40,6 +41,13 @@ class ExceptionSubscriber implements EventSubscriberInterface
                         $exception->getExpectedTypes()[0],
                         $exception->getCurrentType()
                     ),
+                ];
+                $statusCode = Response::HTTP_BAD_REQUEST;
+                break;
+            case $exception instanceof NotEncodableValueException:
+                $content = [
+                    'property' => null,
+                    'message'  => 'Request is malformed',
                 ];
                 $statusCode = Response::HTTP_BAD_REQUEST;
                 break;
