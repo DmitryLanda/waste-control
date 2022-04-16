@@ -1,0 +1,14 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    App\Shared\:
+        resource: '../'
+
+    EventSauce\UuidEncoding\UuidEncoder:
+        class: EventSauce\UuidEncoding\StringUuidEncoder
+
+    EventSauce\EventSourcing\Serialization\MessageSerializer:
+         class: EventSauce\EventSourcing\Serialization\ConstructingMessageSerializer

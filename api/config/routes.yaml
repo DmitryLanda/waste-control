@@ -1,6 +1,5 @@
-controllers:
-    resource: ../src/*/Http/*Controller.php
-    type: annotation
+money:
+    resource: ../src/Money/config/routes.yaml
 
 kernel:
     resource: ../src/Kernel.php

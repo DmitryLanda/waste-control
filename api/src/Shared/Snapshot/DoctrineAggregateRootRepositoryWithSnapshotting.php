@@ -5,53 +5,23 @@ declare(strict_types=1);
 namespace App\Shared\Snapshot;
 
 use App\Money\Domain\Account;
-use EventSauce\EventSourcing\AggregateRoot;
 use EventSauce\EventSourcing\AggregateRootId;
 use EventSauce\EventSourcing\AggregateRootRepository;
-use EventSauce\EventSourcing\EventSourcedAggregateRootRepository;
 use EventSauce\EventSourcing\Message;
 use EventSauce\EventSourcing\MessageRepository;
-use EventSauce\EventSourcing\Serialization\ConstructingMessageSerializer;
 use EventSauce\EventSourcing\Snapshotting\AggregateRootRepositoryWithSnapshotting;
 use EventSauce\EventSourcing\Snapshotting\AggregateRootWithSnapshotting;
 use EventSauce\EventSourcing\Snapshotting\Snapshot;
 use EventSauce\EventSourcing\Snapshotting\SnapshotRepository;
-use EventSauce\MessageRepository\DoctrineMessageRepository\DoctrineUuidV4MessageRepository;
 use Generator;
 
-class DoctrineAggregateRootRepositoryWithSnapshotting implements AggregateRootRepositoryWithSnapshotting
+abstract class DoctrineAggregateRootRepositoryWithSnapshotting implements AggregateRootRepositoryWithSnapshotting
 {
     public function __construct(
-        private string                  $aggregateRootClassName,
-        private MessageRepository       $messageRepository,
-        private SnapshotRepository      $snapshotRepository,
-        private AggregateRootRepository $aggregateRootRepository
+        protected MessageRepository       $messageRepository,
+        protected SnapshotRepository      $snapshotRepository,
+        protected AggregateRootRepository $aggregateRootRepository
     ) {
-        EventSourcedAggregateRootRepository::class;
-//        $this->aggregateRootRepository = new EventSourcedAggregateRootRepository(
-//            Account::class,
-//            $messageRepository,
-//            $messageDispatcher
-//        );
-
-//        $messageRepository = new DoctrineUuidV4MessageRepository(
-//            connection: $connection,
-//            tableName: 'account_events',
-//            serializer: new ConstructingMessageSerializer(),
-//            tableSchema: new DefaultTableSchema(),
-//            uuidEncoder: new StringUuidEncoder(),
-//        );
-
-//            $this->repo = new ConstructingAggregateRootRepositoryWithSnapshotting (
-//            Account::class,
-//            $messageRepository,
-//            new DoctrineSnapshotRepository(AccountId::class, 'account_snapshots', $connection, new StringUuidEncoder()),
-//            new EventSourcedAggregateRootRepository(
-//                Account::class,
-//                $messageRepository,
-//                $dispatcher
-//            )
-//        );
     }
 
     public function retrieve(AggregateRootId $aggregateRootId): Account
@@ -63,7 +33,6 @@ class DoctrineAggregateRootRepositoryWithSnapshotting implements AggregateRootRe
     {
         $this->aggregateRootRepository->persist($aggregateRoot);
         if ($aggregateRoot->aggregateRootVersion() % 10 === 0) {
-            dump('doing snapshot');
             $this->storeSnapshot($aggregateRoot);
         }
     }
@@ -82,7 +51,7 @@ class DoctrineAggregateRootRepositoryWithSnapshotting implements AggregateRootRe
         }
 
         /** @var AggregateRootWithSnapshotting $className */
-        $className = $this->aggregateRootClassName;
+        $className = $this->getAggregateRootClassName();
         $events = $this->retrieveAllEventsAfterVersion($aggregateRootId, $snapshot->aggregateRootVersion());
 
         return $className::reconstituteFromSnapshotAndEvents($snapshot, $events);
@@ -93,6 +62,8 @@ class DoctrineAggregateRootRepositoryWithSnapshotting implements AggregateRootRe
         $snapshot = $aggregateRoot->createSnapshot();
         $this->snapshotRepository->persist($snapshot);
     }
+
+    abstract protected function getAggregateRootClassName(): string;
 
     private function retrieveAllEventsAfterVersion(AggregateRootId $aggregateRootId, int $version): Generator
     {

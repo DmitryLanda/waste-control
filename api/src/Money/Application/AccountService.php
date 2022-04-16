@@ -34,9 +34,9 @@ class AccountService
     {
         $account = $this->retrieveAccount($accountId);
         if ($transaction->isPositive()) {
-            $account->addMoney($transaction->getAmount(), $transaction->getComment());
+            $account->addMoney(abs($transaction->getAmount()), $transaction->getComment());
         } else {
-            $account->spendMoney($transaction->getAmount(), $transaction->getComment());
+            $account->spendMoney(abs($transaction->getAmount()), $transaction->getComment());
         }
 
         $this->repository->persist($account);

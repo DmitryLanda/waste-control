@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Subscriber;
+namespace App\System\Subscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         // return the subscribed events, their methods and priorities
         return [
@@ -27,7 +27,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
     {
         $exception = $event->getThrowable();
         $content = [
-            'message' => $exception->getMessage()
+            'message' => $exception->getMessage(),
         ];
         $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
 
@@ -35,11 +35,11 @@ class ExceptionSubscriber implements EventSubscriberInterface
             case $exception instanceof NotNormalizableValueException:
                 $content = [
                     'property' => $exception->getPath(),
-                    'message' => sprintf(
+                    'message'  => sprintf(
                         'Expected type "%s" but got "%s"',
                         $exception->getExpectedTypes()[0],
                         $exception->getCurrentType()
-                    )
+                    ),
                 ];
                 $statusCode = Response::HTTP_BAD_REQUEST;
                 break;

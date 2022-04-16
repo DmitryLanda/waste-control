@@ -1,0 +1,35 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    App\Money\:
+        resource: '../'
+        exclude:
+            - '../Http/Transaction.php'
+            - '../Domain/Event/'
+
+    account.snapshot_repository:
+        class: App\Shared\Snapshot\DoctrineSnapshotRepository
+        arguments:
+            $aggregateIdClass: 'App\Money\Domain\AccountId'
+            $tableName: 'account_snapshots'
+
+    account.aggregate_root_repository:
+        class: EventSauce\EventSourcing\EventSourcedAggregateRootRepository
+        arguments:
+            $aggregateRootClassName: 'App\Money\Domain\Account'
+            $messageRepository: '@account.message_repository'
+
+    account.message_repository:
+        class: EventSauce\MessageRepository\DoctrineMessageRepository\DoctrineUuidV4MessageRepository
+        arguments:
+            $tableName: 'account_events'
+
+    App\Money\Infrastructure\AccountRepository:
+        arguments:
+            $messageRepository: '@account.message_repository'
+            $snapshotRepository: '@account.snapshot_repository'
+            $aggregateRootRepository: '@account.aggregate_root_repository'
+

@@ -30,15 +30,6 @@ class Account implements AggregateRootWithSnapshotting
         return $account;
     }
 
-    /**
-     * @internal
-     */
-    public function applyAccountCreated(AccountCreated $event): void
-    {
-        $this->total = 0;
-        $this->userId = $event->getUserId();
-    }
-
     public function spendMoney(float $amount, string $comment): void
     {
         $this->recordThat(new MoneySpent(
@@ -48,14 +39,6 @@ class Account implements AggregateRootWithSnapshotting
         ));
     }
 
-    /**
-     * @internal
-     */
-    public function applyMoneySpent(MoneySpent $event): void
-    {
-        $this->total -= $event->getAmount();
-    }
-
     public function addMoney(float $amount, string $comment): void
     {
         $this->recordThat(new MoneyAdded(
@@ -63,14 +46,6 @@ class Account implements AggregateRootWithSnapshotting
             new DateTimeImmutable(),
             $comment,
         ));
-    }
-
-    /**
-     * @internal
-     */
-    public function applyMoneyAdded(MoneyAdded $event): void
-    {
-        $this->total += $event->getAmount();
     }
 
     public function getTotal(): float
@@ -91,9 +66,26 @@ class Account implements AggregateRootWithSnapshotting
     protected static function reconstituteFromSnapshotState(AggregateRootId $id, $state): AggregateRootWithSnapshotting
     {
         $account = new static($id);
-        $account->total = (float) $state->total;
-        $account->userId = (string) $state->user_id;
+        $account->total = (float)$state->total;
+        $account->userId = (string)$state->user_id;
 
         return $account;
     }
+
+    private function applyAccountCreated(AccountCreated $event): void
+    {
+        $this->total = 0;
+        $this->userId = $event->getUserId();
+    }
+
+    private function applyMoneySpent(MoneySpent $event): void
+    {
+        $this->total -= $event->getAmount();
+    }
+
+    private function applyMoneyAdded(MoneyAdded $event): void
+    {
+        $this->total += $event->getAmount();
+    }
+
 }
