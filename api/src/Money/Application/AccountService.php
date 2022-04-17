@@ -9,7 +9,6 @@ use App\Money\Domain\AccountId;
 use App\Money\Domain\Repository\AccountRepositoryInterface;
 use App\Money\Http\Transaction;
 use Exception;
-use Ramsey\Uuid\UuidInterface;
 
 class AccountService
 {
@@ -18,7 +17,7 @@ class AccountService
 
     }
 
-    public function createNewAccount(UuidInterface $userId): string
+    public function createNewAccount(string $userId): string
     {
         $aggregateId = AccountId::generate();
         $account = Account::create($aggregateId, $userId);
@@ -49,7 +48,7 @@ class AccountService
     {
         $aggregateId = AccountId::fromString($accountId);
         $account = $this->repository->retrieveFromSnapshot($aggregateId);
-        if (!$account) {
+        if (!$account || !$account->isValid()) {
             throw new Exception("Account #$accountId not exists");
         }
 

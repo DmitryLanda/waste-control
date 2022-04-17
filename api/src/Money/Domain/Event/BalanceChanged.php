@@ -14,22 +14,35 @@ abstract class BalanceChanged implements SerializablePayload
     public const SOURCE_HTTP = 'http';
 
     public function __construct(
+        private string $userId,
+        private string $accountId,
         private float             $amount,
         private DateTimeInterface $timestamp,
         private string            $comment,
         private array             $tags = [],
         private string            $source = self::SOURCE_HTTP,
-    ) {
-    }
+    ) {}
 
     public function getAmount(): float
     {
         return $this->amount;
     }
 
+    public function getAccountId(): string
+    {
+        return $this->accountId;
+    }
+
+    public function getUserId(): string
+    {
+        return $this->userId;
+    }
+
     public function toPayload(): array
     {
         return [
+            'user_id' => $this->userId,
+            'account_id' => $this->accountId,
             'amount'    => $this->amount,
             'comment'   => $this->comment,
             'tags'      => $this->tags,
@@ -41,6 +54,8 @@ abstract class BalanceChanged implements SerializablePayload
     public static function fromPayload(array $payload): static
     {
         return new static(
+            (string)$payload['user_id'],
+            (string)$payload['account_id'],
             (float)$payload['amount'],
             DateTimeImmutable::createFromFormat(self::TIMESTAMP_FORMAT, $payload['timestamp']),
             (string)$payload['comment'],

@@ -12,7 +12,6 @@ use EventSauce\EventSourcing\AggregateRootBehaviour;
 use EventSauce\EventSourcing\AggregateRootId;
 use EventSauce\EventSourcing\Snapshotting\AggregateRootWithSnapshotting;
 use EventSauce\EventSourcing\Snapshotting\SnapshottingBehaviour;
-use Ramsey\Uuid\UuidInterface;
 
 class Account implements AggregateRootWithSnapshotting
 {
@@ -22,10 +21,12 @@ class Account implements AggregateRootWithSnapshotting
     private float $total = 0;
     private string $userId;
 
-    public static function create(AccountId $id, UuidInterface $userId): static
+    public static function create(AccountId $id, string $userId): static
     {
         $account = new static($id);
-        $account->recordThat(new AccountCreated(new DateTimeImmutable(), $userId));
+        $account->recordThat(
+            new AccountCreated($id->toString(), $userId, new DateTimeImmutable())
+        );
 
         return $account;
     }
@@ -33,6 +34,8 @@ class Account implements AggregateRootWithSnapshotting
     public function spendMoney(float $amount, string $comment): void
     {
         $this->recordThat(new MoneySpent(
+            $this->userId,
+            $this->aggregateRootId()->toString(),
             $amount,
             new DateTimeImmutable(),
             $comment,
@@ -42,6 +45,8 @@ class Account implements AggregateRootWithSnapshotting
     public function addMoney(float $amount, string $comment): void
     {
         $this->recordThat(new MoneyAdded(
+            $this->userId,
+            $this->aggregateRootId()->toString(),
             $amount,
             new DateTimeImmutable(),
             $comment,
@@ -58,9 +63,17 @@ class Account implements AggregateRootWithSnapshotting
         return $this->userId;
     }
 
+    public function isValid(): bool
+    {
+        return $this->aggregateRootVersion() > 0;
+    }
+
     protected function createSnapshotState(): array
     {
-        return ['total' => $this->getTotal(), 'user_id' => $this->getUserId()];
+        return [
+            'total'   => $this->getTotal(),
+            'user_id' => $this->getUserId(),
+        ];
     }
 
     protected static function reconstituteFromSnapshotState(AggregateRootId $id, $state): AggregateRootWithSnapshotting

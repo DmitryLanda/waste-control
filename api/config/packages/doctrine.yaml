@@ -9,6 +9,9 @@ doctrine:
             User:
                 dir: '%kernel.project_dir%/src/User/Infrastructure/Orm'
                 prefix: 'App\User\Infrastructure\Orm'
+            UserAccount:
+                dir: '%kernel.project_dir%/src/Money/Infrastructure/Orm'
+                prefix: 'App\Money\Infrastructure\Orm'
 
 when@test:
     doctrine:

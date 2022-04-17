@@ -9,6 +9,8 @@ services:
         exclude:
             - '../Http/Transaction.php'
             - '../Domain/Event/'
+            - '../Domain/Account.php'
+            - '../Domain/AccountId.php'
 
     account.snapshot_repository:
         class: App\Shared\Snapshot\DoctrineSnapshotRepository
@@ -21,6 +23,12 @@ services:
         arguments:
             $aggregateRootClassName: 'App\Money\Domain\Account'
             $messageRepository: '@account.message_repository'
+            $dispatcher: '@account.message_dispatcher'
+
+    account.message_dispatcher:
+        class: EventSauce\EventSourcing\SynchronousMessageDispatcher
+        arguments:
+            - '@App\Money\Domain\Handler\AccountSynchronizer'
 
     account.message_repository:
         class: EventSauce\MessageRepository\DoctrineMessageRepository\DoctrineUuidV4MessageRepository

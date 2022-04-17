@@ -8,14 +8,16 @@ use App\User\Domain\UserRepositoryInterface;
 use App\User\Infrastructure\Orm as Orm;
 use App\User\Domain as Domain;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 
 class UserRepository implements UserRepositoryInterface
 {
+    private ObjectRepository $ormRepository;
 
-    public function __construct(
-        private EntityManagerInterface $entityManager,
-        private Orm\UserRepository $ormRepository
-    ) {}
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+        $this->ormRepository = $this->entityManager->getRepository(Orm\User::class);
+    }
 
     public function findOneById(string $id): ?Domain\User
     {

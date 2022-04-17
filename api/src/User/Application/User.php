@@ -11,8 +11,7 @@ class User
     public function __construct(
         private string $id,
         private string $fullName,
-        private string $email,
-        private array $accounts = []
+        private string $email
     ) {}
 
     public function getId(): string
@@ -28,16 +27,6 @@ class User
     public function getEmail(): string
     {
         return $this->email;
-    }
-
-    public function getAccounts(): array
-    {
-        return $this->accounts;
-    }
-
-    public function addAccount(string $accountId): void
-    {
-        $this->accounts[] = $accountId;
     }
 
     public static function fromDomain(Domain\User $user): self
