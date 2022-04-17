@@ -6,7 +6,7 @@ namespace App\User\Application;
 
 use App\User\Domain as Domain;
 
-class User
+class UserResponse
 {
     public function __construct(
         private string $id,

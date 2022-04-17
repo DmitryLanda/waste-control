@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Money\Domain\Handler;
+namespace App\Account\Domain\Handler;
 
-use App\Money\Domain\Event\AccountCreated;
-use App\Money\Domain\Event\MoneyAdded;
-use App\Money\Domain\Event\MoneySpent;
-use App\Money\Domain\Repository\UserAccountRepositoryInterface;
+use App\Account\Domain\Event\AccountCreated;
+use App\Account\Domain\Event\MoneyAdded;
+use App\Account\Domain\Event\MoneySpent;
+use App\Account\Domain\Repository\UserAccountRepositoryInterface;
 use EventSauce\EventSourcing\Message;
 use EventSauce\EventSourcing\MessageConsumer;
 

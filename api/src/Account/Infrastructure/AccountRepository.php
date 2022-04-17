@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Money\Infrastructure;
+namespace App\Account\Infrastructure;
 
-use App\Money\Domain\Account;
-use App\Money\Domain\Repository\AccountRepositoryInterface;
+use App\Account\Domain\Account;
+use App\Account\Domain\Repository\AccountRepositoryInterface;
 use App\Shared\Snapshot\DoctrineAggregateRootRepositoryWithSnapshotting;
 
 final class AccountRepository extends DoctrineAggregateRootRepositoryWithSnapshotting implements AccountRepositoryInterface

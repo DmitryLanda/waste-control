@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Money\Http;
+namespace App\Account\Http;
 
-use App\Money\Application\AccountService;
+use App\Account\Application\TransactionService;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/accounts')]
-class MoneyController extends AbstractController
+class TransactionController extends AbstractController
 {
-    public function __construct(private AccountService $service)
+    public function __construct(private TransactionService $service)
     {
     }
 

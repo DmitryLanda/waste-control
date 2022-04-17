@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Money\Domain\Event;
+namespace App\Account\Domain\Event;
 
 use DateTimeImmutable;
 use DateTimeInterface;

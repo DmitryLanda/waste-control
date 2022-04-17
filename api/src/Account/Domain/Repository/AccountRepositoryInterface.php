@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Money\Domain\Repository;
+namespace App\Account\Domain\Repository;
 
 use EventSauce\EventSourcing\Snapshotting\AggregateRootRepositoryWithSnapshotting;
 

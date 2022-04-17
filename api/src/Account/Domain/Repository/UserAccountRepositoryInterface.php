@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Money\Domain\Repository;
+namespace App\Account\Domain\Repository;
 
 interface UserAccountRepositoryInterface
 {
@@ -11,4 +11,6 @@ interface UserAccountRepositoryInterface
     public function incrementBalance(string $userId, string $accountId, float $amount): void;
 
     public function decrementBalance(string $userId, string $accountId, float $amount): void;
+
+    public function findByUserId(string $userId): array;
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Money\Domain;
+namespace App\Account\Domain;
 
 use EventSauce\EventSourcing\AggregateRootId;
 use Ramsey\Uuid\Uuid;

@@ -2,29 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Money\Application;
+namespace App\Account\Application;
 
-use App\Money\Domain\Account;
-use App\Money\Domain\AccountId;
-use App\Money\Domain\Repository\AccountRepositoryInterface;
-use App\Money\Http\Transaction;
+use App\Account\Domain\Account;
+use App\Account\Domain\AccountId;
+use App\Account\Domain\Repository\AccountRepositoryInterface;
+use App\Account\Http\Transaction;
 use Exception;
 
-class AccountService
+class TransactionService
 {
-    public function __construct(private AccountRepositoryInterface $repository)
-    {
-
-    }
-
-    public function createNewAccount(string $userId): string
-    {
-        $aggregateId = AccountId::generate();
-        $account = Account::create($aggregateId, $userId);
-        $this->repository->persist($account);
-
-        return $aggregateId->toString();
-    }
+    public function __construct(
+        private AccountRepositoryInterface $accountRepository
+    ) {}
 
     /**
      * @throws Exception
@@ -38,7 +28,7 @@ class AccountService
             $account->spendMoney(abs($transaction->getAmount()), $transaction->getComment());
         }
 
-        $this->repository->persist($account);
+        $this->accountRepository->persist($account);
     }
 
     /**
@@ -47,7 +37,7 @@ class AccountService
     private function retrieveAccount(string $accountId): Account
     {
         $aggregateId = AccountId::fromString($accountId);
-        $account = $this->repository->retrieveFromSnapshot($aggregateId);
+        $account = $this->accountRepository->retrieveFromSnapshot($aggregateId);
         if (!$account || !$account->isValid()) {
             throw new Exception("Account #$accountId not exists");
         }

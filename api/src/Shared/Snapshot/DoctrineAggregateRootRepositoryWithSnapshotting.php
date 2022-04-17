@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Snapshot;
 
-use App\Money\Domain\Account;
+use App\Account\Domain\Account;
 use EventSauce\EventSourcing\AggregateRootId;
 use EventSauce\EventSourcing\AggregateRootRepository;
 use EventSauce\EventSourcing\Message;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Money\Domain;
+namespace App\Account\Domain;
 
-use App\Money\Domain\Event\AccountCreated;
-use App\Money\Domain\Event\MoneyAdded;
-use App\Money\Domain\Event\MoneySpent;
+use App\Account\Domain\Event\AccountCreated;
+use App\Account\Domain\Event\MoneyAdded;
+use App\Account\Domain\Event\MoneySpent;
 use DateTimeImmutable;
 use EventSauce\EventSourcing\AggregateRootBehaviour;
 use EventSauce\EventSourcing\AggregateRootId;

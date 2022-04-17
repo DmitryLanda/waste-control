@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Money\Infrastructure\Orm;
+namespace App\Account\Infrastructure\Orm;
 
 use Doctrine\ORM\Mapping as ORM;
 

@@ -1,5 +1,5 @@
 imports:
     - { resource: ../src/System/config/services.yaml }
     - { resource: ../src/Shared/config/services.yaml }
-    - { resource: ../src/Money/config/services.yaml }
+    - { resource: ../src/Account/config/services.yaml }
     - { resource: ../src/User/config/services.yaml }
