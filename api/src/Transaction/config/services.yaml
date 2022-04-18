@@ -7,9 +7,10 @@ services:
     App\Transaction\:
         resource: '../'
         exclude:
-            - '../Http/Transaction.php'
+            - '../config/'
+            - '../Application/TransactionResponse.php'
+            - '../Domain/Transaction.php'
+            - '../Infrastructure/Orm/Transaction.php'
 
-#    account.message_dispatcher:
-#        class: EventSauce\EventSourcing\SynchronousMessageDispatcher
-#        arguments:
-#            - '@App\Transaction\Domain\Projection\AccountSynchronizer'
+    App\Transaction\Domain\Projection\TransactionLogger:
+        tags: ['account.consumer']

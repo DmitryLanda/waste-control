@@ -38,6 +38,21 @@ abstract class BalanceChanged implements SerializablePayload
         return $this->userId;
     }
 
+    public function getTimestamp(): DateTimeInterface
+    {
+        return $this->timestamp;
+    }
+
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
     public function toPayload(): array
     {
         return [

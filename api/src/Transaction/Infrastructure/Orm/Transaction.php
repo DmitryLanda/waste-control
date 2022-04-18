@@ -95,9 +95,9 @@ final class Transaction
         return $this->comment;
     }
 
-    public function setComment(string $comment): self
+    public function setComment(?string $comment): self
     {
-        $this->comment = $comment;
+        $this->comment = $comment ?? '';
 
         return $this;
     }
