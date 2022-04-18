@@ -4,44 +4,25 @@ declare(strict_types=1);
 
 namespace App\Account\Application;
 
-use App\Account\Domain\Account;
-use App\Account\Domain\AccountId;
-use App\Account\Domain\Repository\AccountRepositoryInterface;
-use App\Account\Http\Transaction;
+use App\Transaction\Application\TransactionResponse;
+use App\Transaction\Domain\Repository\TransactionRepositoryInterface;
+use App\Transaction\Domain\Transaction;
 use Exception;
 
 class TransactionService
 {
     public function __construct(
-        private AccountRepositoryInterface $accountRepository
-    ) {}
-
-    /**
-     * @throws Exception
-     */
-    public function registerTransaction(string $accountId, Transaction $transaction): void
-    {
-        $account = $this->retrieveAccount($accountId);
-        if ($transaction->isPositive()) {
-            $account->addMoney(abs($transaction->getAmount()), $transaction->getComment());
-        } else {
-            $account->spendMoney(abs($transaction->getAmount()), $transaction->getComment());
-        }
-
-        $this->accountRepository->persist($account);
+        private TransactionRepositoryInterface $transactionRepository
+    ) {
     }
 
     /**
-     * @throws Exception
+     * @return array<TransactionResponse>
      */
-    private function retrieveAccount(string $accountId): Account
+    public function searchTransactions(string $accountId): array
     {
-        $aggregateId = AccountId::fromString($accountId);
-        $account = $this->accountRepository->retrieveFromSnapshot($aggregateId);
-        if (!$account || !$account->isValid()) {
-            throw new Exception("Account #$accountId not exists");
-        }
-
-        return $account;
+        return array_map(static function (Transaction $transaction): TransactionResponse {
+            return TransactionResponse::fromDomain($transaction);
+        }, $this->transactionRepository->findByAccountId($accountId));
     }
 }

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Account\Infrastructure\Orm;
+namespace App\Transaction\Infrastructure\Orm;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'user_accounts')]
-final class UserAccount
+#[ORM\Table(name: 'account_transactions')]
+final class Transaction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
@@ -21,11 +22,17 @@ final class UserAccount
     #[ORM\Column(type: 'string', length: 36)]
     private string $accountId;
 
-    #[ORM\Column(type: 'string', options: ['default' => 'Основной'])]
-    private string $accountName = 'Основной';
+    #[ORM\Column(type: 'datetime')]
+    private DateTimeInterface $createdAt;
 
-    #[ORM\Column(type: 'decimal', scale: 2, options: ['default' => 0])]
-    private float $amount = 0;
+    #[ORM\Column(type: 'decimal', scale: 2)]
+    private float $amount;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private string $comment;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $tags = null;
 
     public function getId(): ?int
     {
@@ -68,14 +75,41 @@ final class UserAccount
         return $this;
     }
 
-    public function getAccountName(): string
+    /**
+     * @return DateTimeInterface
+     */
+    public function getCreatedAt(): DateTimeInterface
     {
-        return $this->accountName;
+        return $this->createdAt;
     }
 
-    public function setAccountName(string $accountName): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
-        $this->accountName = $accountName;
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(string $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getTags(): ?array
+    {
+        return $this->tags;
+    }
+
+    public function setTags(?array $tags): self
+    {
+        $this->tags = $tags;
 
         return $this;
     }

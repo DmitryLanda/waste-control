@@ -4,6 +4,9 @@ user:
 account:
     resource: ../src/Account/config/routes.yaml
 
+transaction:
+    resource: ../src/Transaction/config/routes.yaml
+
 kernel:
     resource: ../src/Kernel.php
     type: annotation

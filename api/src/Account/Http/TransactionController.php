@@ -18,9 +18,9 @@ class TransactionController extends AbstractController
     {
     }
 
-    #[Route('/{id}/transactions', name: 'account.transactions.add', methods: ['POST'])]
+    #[Route('/{accountId}/transactions', name: 'account.transactions.add', methods: ['POST'])]
     #[ParamConverter('transaction', converter: 'json_converter')]
-    public function addTransaction(string $id, Transaction $transaction): Response
+    public function addTransaction(string $accountId, Transaction $transaction): Response
     {
         try {
             $this->service->registerTransaction($id, $transaction);

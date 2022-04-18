@@ -3,3 +3,4 @@ imports:
     - { resource: ../src/Shared/config/services.yaml }
     - { resource: ../src/Account/config/services.yaml }
     - { resource: ../src/User/config/services.yaml }
+    - { resource: ../src/Transaction/config/services.yaml }
