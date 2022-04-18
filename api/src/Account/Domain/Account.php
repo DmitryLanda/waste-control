@@ -20,12 +20,13 @@ class Account implements AggregateRootWithSnapshotting
 
     private float $total = 0;
     private string $userId;
+    private string $name;
 
-    public static function create(AccountId $id, string $userId): static
+    public static function create(AccountId $id, string $name, string $userId): static
     {
         $account = new static($id);
         $account->recordThat(
-            new AccountCreated($id->toString(), $userId, new DateTimeImmutable())
+            new AccountCreated($id->toString(), $userId, $name, new DateTimeImmutable())
         );
 
         return $account;

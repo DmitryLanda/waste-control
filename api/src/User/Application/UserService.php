@@ -28,7 +28,7 @@ class UserService
     {
         $user = Domain\User::create($request->getFullName(), $request->getEmail());
         $this->repository->save($user);
-        $this->accountService->createNewAccount($user->getId());
+        $this->accountService->createNewAccount($user->getId(), 'Основной');
 
         return UserResponse::fromDomain($user);
     }

@@ -15,6 +15,7 @@ final class AccountCreated implements SerializablePayload
     public function __construct(
         private string $accountId,
         private string $userId,
+        private string $name,
         private DateTimeInterface $timestamp,
     ) {}
 
@@ -24,6 +25,7 @@ final class AccountCreated implements SerializablePayload
             'timestamp' => $this->timestamp->format(self::TIMESTAMP_FORMAT),
             'user_id' => $this->getUserId(),
             'account_id' => $this->getAccountId(),
+            'account_name' => $this->getAccountName(),
         ];
     }
 
@@ -32,6 +34,7 @@ final class AccountCreated implements SerializablePayload
         return new self(
             (string) $payload['account_id'],
             (string) $payload['user_id'],
+            (string) $payload['account_name'],
             DateTime::createFromFormat(self::TIMESTAMP_FORMAT, $payload['timestamp']),
         );
     }
@@ -44,5 +47,10 @@ final class AccountCreated implements SerializablePayload
     public function getAccountId(): string
     {
         return $this->accountId;
+    }
+
+    public function getAccountName(): string
+    {
+        return $this->name;
     }
 }

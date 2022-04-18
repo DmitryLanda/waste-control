@@ -23,7 +23,7 @@ class AccountSynchronizer implements MessageConsumer
         $event = $message->payload();
 
         if ($event instanceof AccountCreated) {
-            $this->linkUserWithNewAccount($event->getUserId(), $event->getAccountId());
+            $this->linkUserWithNewAccount($event->getAccountName(), $event->getUserId(), $event->getAccountId());
         } elseif ($event instanceof MoneySpent) {
             $this->decrementBalance($event->getUserId(), $event->getAccountId(), $event->getAmount());
         } elseif ($event instanceof MoneyAdded) {
@@ -31,9 +31,9 @@ class AccountSynchronizer implements MessageConsumer
         }
     }
 
-    private function linkUserWithNewAccount(string $userId, string $accountId)
+    private function linkUserWithNewAccount(string $accountName, string $userId, string $accountId)
     {
-        $this->repository->save($userId, $accountId);
+        $this->repository->save($accountName, $userId, $accountId);
     }
 
     private function incrementBalance(string $userId, string $accountId, float $amount)

@@ -13,12 +13,13 @@ class UserAccountRepository implements UserAccountRepositoryInterface
     public function __construct(private EntityManagerInterface $entityManager)
     {}
 
-    public function save(string $userId, string $accountId): void
+    public function save(string $accountName, string $userId, string $accountId): void
     {
         $entity = new UserAccount();
         $entity->setUserId($userId)
             ->setAccountId($accountId)
             ->setAmount(0)
+            ->setAccountName($accountName)
         ;
 
         $this->entityManager->persist($entity);
@@ -59,12 +60,12 @@ class UserAccountRepository implements UserAccountRepositoryInterface
     {
         return $this->entityManager
             ->createQueryBuilder()
-            ->select('ua.accountId')
+            ->select('ua.accountId, ua.accountName, ua.amount')
             ->from(UserAccount::class, 'ua')
             ->where('ua.userId = :userId')
             ->setParameter('userId', $userId)
             ->getQuery()
-            ->getSingleColumnResult()
+            ->getArrayResult()
         ;
     }
 }

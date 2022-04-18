@@ -17,7 +17,7 @@ export default function App() {
             <Content>
                 <Row gutter={8}>
                     <Col span={8}>
-                        <AccountList userId="65220498-08b5-4531-9643-9aab3135f0c3" />
+                        <AccountList userId="30893c76-5ead-44d1-9b85-dcaa15fde08a" />
                     </Col>
                     <Col span={4}>
                         <Card size="small" title="Топ категории" style={{backgroundColor: '#242b51', marginBottom: '1vmin', height: '30vmin'}}>

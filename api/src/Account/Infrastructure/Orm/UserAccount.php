@@ -21,6 +21,9 @@ final class UserAccount
     #[ORM\Column(type: 'string')]
     private string $accountId;
 
+    #[ORM\Column(type: 'string')]
+    private string $accountName;
+
     #[ORM\Column(type: 'float')]
     private float $amount;
 
@@ -61,6 +64,18 @@ final class UserAccount
     public function setAmount(float $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getAccountName(): string
+    {
+        return $this->accountName;
+    }
+
+    public function setAccountName(string $accountName): self
+    {
+        $this->accountName = $accountName;
 
         return $this;
     }
