@@ -3,6 +3,9 @@
     font-size: calc(10px + 1vmin);
     color: white;
 }
+.Money.small {
+    font-size: 1.8vmin;
+}
 .Money.Positive {
     color: #54c454;
 }

@@ -21,7 +21,7 @@ class TransactionController extends AbstractController
     {
         return $this->json(
             $this->service->searchTransactions($accountId),
-            Response::HTTP_CREATED
+            Response::HTTP_OK
         );
     }
 }

@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Redefine some antd styles - should be replaced with less vars and custom theme */
+.ant-card {
+  background-color: #242b51;
+  margin-bottom: 1vmin;
+}
+
+.ant-card .ant-card-loading-block {
+  background: linear-gradient(90deg, rgba(34, 38, 70, 0.9), rgba(34, 38, 70, 0.2), rgba(34, 38, 70, 0.5));
+  background-size: 600% 600%;
+}

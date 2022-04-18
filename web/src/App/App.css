@@ -14,3 +14,7 @@
   padding-left: 10vmin;
   padding-right: 10vmin;
 }
+
+.App .ant-card {
+  height: 30vmin;
+}

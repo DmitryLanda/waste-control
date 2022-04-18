@@ -1,0 +1,10 @@
+.TransactionItem {
+    font-size: 1.8vmin;
+}
+.TransactionItem .timestamp {
+    color: grey;
+}
+.TransactionItem .tags {
+    display: inline-block;
+    margin-left: 1vmin;
+}

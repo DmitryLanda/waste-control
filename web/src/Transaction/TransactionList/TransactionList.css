@@ -1,0 +1,9 @@
+.AccountList .AccountCard {
+    background-color: #242b51;
+    height: 30vmin;
+}
+
+.AccountList .AccountCard .ant-card-loading-block {
+    background: linear-gradient(90deg, rgba(34, 38, 70, 0.9), rgba(34, 38, 70, 0.2), rgba(34, 38, 70, 0.5));
+    background-size: 600% 600%;
+}
