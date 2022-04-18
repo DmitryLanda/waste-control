@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Transaction\Application;
+namespace App\Transaction\Application\Dto;
 
 use App\Transaction\Domain\Transaction;
 use DateTimeInterface;

@@ -12,7 +12,7 @@ interface TransactionRepositoryInterface
     /**
      * @return array<Transaction>
      */
-    public function findByAccountId(string $accountId): array;
+    public function findByAccountId(string $accountId, int $page = 1, int $limit = 50): array;
 
     public function addTransaction(
         string $userId,

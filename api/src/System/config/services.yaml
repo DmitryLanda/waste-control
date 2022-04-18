@@ -10,3 +10,7 @@ services:
     App\System\ParamConverter\JsonConverter:
         tags:
             - { name: 'request.param_converter', converter: 'json_converter' }
+
+    App\System\ParamConverter\QueryConverter:
+        tags:
+            - { name: 'request.param_converter', converter: 'query_converter' }

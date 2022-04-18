@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 
-class ExceptionSubscriber implements EventSubscriberInterface
+class ExceptionSubscriber //implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {

@@ -20,11 +20,14 @@ class TransactionRepository implements TransactionRepositoryInterface
         $this->ormRepository = $this->entityManager->getRepository(Transaction::class);
     }
 
-    public function findByAccountId(string $accountId): array
+    public function findByAccountId(string $accountId, int $page = 1, int $limit = 50): array
     {
+        $offset = $limit * ($page - 1);
         $entities = $this->ormRepository->findBy(
             ['accountId' => $accountId],
-            ['createdAt' => 'desc']
+            ['createdAt' => 'desc'],
+            $limit,
+            $offset
         );
 
         return array_map(static function (Transaction $entity): Domain\Transaction {
