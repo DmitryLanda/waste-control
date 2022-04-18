@@ -13,7 +13,7 @@ services:
             - '../Domain/AccountId.php'
 
     account.snapshot_repository:
-        class: App\Shared\Snapshot\DoctrineSnapshotRepository
+        class: App\Shared\EventSourcing\DoctrineSnapshotRepository
         arguments:
             $aggregateIdClass: 'App\Account\Domain\AccountId'
             $tableName: 'account_snapshots'
@@ -25,10 +25,13 @@ services:
             $messageRepository: '@account.message_repository'
             $dispatcher: '@account.message_dispatcher'
 
+    App\Account\Domain\Handler\AccountSynchronizer:
+        tags: ['account.consumer']
+
     account.message_dispatcher:
-        class: EventSauce\EventSourcing\SynchronousMessageDispatcher
+        class: App\Shared\EventSourcing\SynchronousMessageDispatcher
         arguments:
-            - '@App\Account\Domain\Handler\AccountSynchronizer'
+            - !tagged_iterator account.consumer
 
     account.message_repository:
         class: EventSauce\MessageRepository\DoctrineMessageRepository\DoctrineUuidV4MessageRepository

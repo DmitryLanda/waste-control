@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Snapshot;
+namespace App\Shared\EventSourcing;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;

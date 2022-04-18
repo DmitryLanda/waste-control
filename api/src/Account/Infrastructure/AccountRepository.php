@@ -4,7 +4,7 @@ namespace App\Account\Infrastructure;
 
 use App\Account\Domain\Account;
 use App\Account\Domain\Repository\AccountRepositoryInterface;
-use App\Shared\Snapshot\DoctrineAggregateRootRepositoryWithSnapshotting;
+use App\Shared\EventSourcing\DoctrineAggregateRootRepositoryWithSnapshotting;
 
 final class AccountRepository extends DoctrineAggregateRootRepositoryWithSnapshotting implements AccountRepositoryInterface
 {

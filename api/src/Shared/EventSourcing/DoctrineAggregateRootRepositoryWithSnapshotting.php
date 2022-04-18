@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Snapshot;
+namespace App\Shared\EventSourcing;
 
 use App\Account\Domain\Account;
 use EventSauce\EventSourcing\AggregateRootId;
