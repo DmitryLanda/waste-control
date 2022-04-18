@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Account\Http;
+namespace App\Account\Application\Dto;
 
-final class Transaction
+final class NewTransaction
 {
     public function __construct(
         private float $amount,
-        private string $comment = ''
+        private ?string $comment,
+        private ?array $tags
     ) {}
 
     public function getAmount(): float
@@ -19,6 +20,11 @@ final class Transaction
     public function getComment(): string
     {
         return $this->comment;
+    }
+
+    public function getTags(): array
+    {
+        return $this->tags ?? [];
     }
 
     public function isPositive(): bool

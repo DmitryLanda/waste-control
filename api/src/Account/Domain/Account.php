@@ -32,7 +32,7 @@ class Account implements AggregateRootWithSnapshotting
         return $account;
     }
 
-    public function spendMoney(float $amount, string $comment): void
+    public function spendMoney(float $amount, string $comment, array $tags = []): void
     {
         $this->recordThat(new MoneySpent(
             $this->userId,
@@ -40,10 +40,11 @@ class Account implements AggregateRootWithSnapshotting
             $amount,
             new DateTimeImmutable(),
             $comment,
+            $tags
         ));
     }
 
-    public function addMoney(float $amount, string $comment): void
+    public function addMoney(float $amount, string $comment, array $tags = []): void
     {
         $this->recordThat(new MoneyAdded(
             $this->userId,
@@ -51,6 +52,7 @@ class Account implements AggregateRootWithSnapshotting
             $amount,
             new DateTimeImmutable(),
             $comment,
+            $tags
         ));
     }
 

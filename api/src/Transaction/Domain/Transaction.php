@@ -9,7 +9,6 @@ use DateTimeInterface;
 final class Transaction
 {
     public function __construct(
-        private int               $id,
         private string            $userId,
         private string            $accountId,
         private DateTimeInterface $createdAt,
@@ -17,11 +16,6 @@ final class Transaction
         private string            $comment,
         private ?array            $tags = null,
     ) {
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getUserId(): string

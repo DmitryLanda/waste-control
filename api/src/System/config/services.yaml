@@ -10,11 +10,3 @@ services:
     App\System\ParamConverter\JsonConverter:
         tags:
             - { name: 'request.param_converter', converter: 'json_converter' }
-
-    Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter: ~
-
-    snake_case_normalizer:
-        class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
-        arguments:
-            $nameConverter: '@Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter'
-        tags: [ 'serializer.normalizer' ]

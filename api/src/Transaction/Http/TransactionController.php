@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Transaction\Http;
 
-use App\Account\Application\TransactionService;
+use App\Transaction\Application\TransactionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

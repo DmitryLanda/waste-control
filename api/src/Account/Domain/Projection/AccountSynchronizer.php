@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Account\Domain\Handler;
+namespace App\Account\Domain\Projection;
 
 use App\Account\Domain\Event\AccountCreated;
 use App\Account\Domain\Event\MoneyAdded;

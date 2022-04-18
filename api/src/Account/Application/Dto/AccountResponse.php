@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Account\Application;
+namespace App\Account\Application\Dto;
 
 final class AccountResponse
 {
@@ -32,7 +32,7 @@ final class AccountResponse
         return new self(
             $data['accountId'],
             $data['accountName'],
-            $data['amount'],
+            (float) $data['amount'],
         );
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Transaction\Infrastructure;
 
+use App\Transaction\Domain as Domain;
 use App\Transaction\Domain\Repository\TransactionRepositoryInterface;
 use App\Transaction\Infrastructure\Orm\Transaction;
 use DateTimeInterface;
@@ -21,10 +22,21 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function findByAccountId(string $accountId): array
     {
-        return $this->ormRepository->findBy(
+        $entities = $this->ormRepository->findBy(
             ['accountId' => $accountId],
             ['createdAt' => 'desc']
         );
+
+        return array_map(static function (Transaction $entity): Domain\Transaction {
+            return new Domain\Transaction(
+                $entity->getUserId(),
+                $entity->getAccountId(),
+                $entity->getCreatedAt(),
+                $entity->getAmount(),
+                $entity->getComment(),
+                $entity->getTags(),
+            );
+        }, $entities);
     }
 
     public function addTransaction(

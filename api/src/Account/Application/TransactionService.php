@@ -4,25 +4,52 @@ declare(strict_types=1);
 
 namespace App\Account\Application;
 
-use App\Transaction\Application\TransactionResponse;
-use App\Transaction\Domain\Repository\TransactionRepositoryInterface;
-use App\Transaction\Domain\Transaction;
+use App\Account\Application\Dto\NewTransaction;
+use App\Account\Domain\Account;
+use App\Account\Domain\AccountId;
+use App\Account\Domain\Repository\AccountRepositoryInterface;
 use Exception;
 
 class TransactionService
 {
-    public function __construct(
-        private TransactionRepositoryInterface $transactionRepository
-    ) {
+    public function __construct(private AccountRepositoryInterface $accountRepository)
+    {
     }
 
     /**
-     * @return array<TransactionResponse>
+     * @throws Exception
      */
-    public function searchTransactions(string $accountId): array
+    public function registerTransaction(string $accountId, NewTransaction $transaction): void
     {
-        return array_map(static function (Transaction $transaction): TransactionResponse {
-            return TransactionResponse::fromDomain($transaction);
-        }, $this->transactionRepository->findByAccountId($accountId));
+        $account = $this->retrieveAccount($accountId);
+        if ($transaction->isPositive()) {
+            $account->addMoney(
+                abs($transaction->getAmount()),
+                $transaction->getComment(),
+                $transaction->getTags()
+            );
+        } else {
+            $account->spendMoney(
+                abs($transaction->getAmount()),
+                $transaction->getComment(),
+                $transaction->getTags()
+            );
+        }
+
+        $this->accountRepository->persist($account);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function retrieveAccount(string $accountId): Account
+    {
+        $aggregateId = AccountId::fromString($accountId);
+        $account = $this->accountRepository->retrieveFromSnapshot($aggregateId);
+        if (!$account || !$account->isValid()) {
+            throw new Exception("Account #$accountId not exists");
+        }
+
+        return $account;
     }
 }

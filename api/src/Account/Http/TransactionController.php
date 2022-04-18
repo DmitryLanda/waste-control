@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Account\Http;
 
+use App\Account\Application\Dto\NewTransaction;
 use App\Account\Application\TransactionService;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -20,10 +21,10 @@ class TransactionController extends AbstractController
 
     #[Route('/{accountId}/transactions', name: 'account.transactions.add', methods: ['POST'])]
     #[ParamConverter('transaction', converter: 'json_converter')]
-    public function addTransaction(string $accountId, Transaction $transaction): Response
+    public function addTransaction(string $accountId, NewTransaction $transaction): Response
     {
         try {
-            $this->service->registerTransaction($id, $transaction);
+            $this->service->registerTransaction($accountId, $transaction);
         } catch (Exception $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }

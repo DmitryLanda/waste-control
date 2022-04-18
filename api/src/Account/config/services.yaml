@@ -7,7 +7,8 @@ services:
     App\Account\:
         resource: '../'
         exclude:
-            - '../Http/Transaction.php'
+            - '../config/'
+            - '../Application/Dto/'
             - '../Domain/Event/'
             - '../Domain/Account.php'
             - '../Domain/AccountId.php'
@@ -25,7 +26,7 @@ services:
             $messageRepository: '@account.message_repository'
             $dispatcher: '@account.message_dispatcher'
 
-    App\Account\Domain\Handler\AccountSynchronizer:
+    App\Account\Domain\Projection\AccountSynchronizer:
         tags: ['account.consumer']
 
     account.message_dispatcher:
