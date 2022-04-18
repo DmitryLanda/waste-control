@@ -1,0 +1,16 @@
+.App {
+  color: white;
+  font-size: calc(10px + 2vmin);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.App, .App header, .App main, .App footer {
+  background-color: #222646;
+}
+
+.App main {
+  padding-left: 10vmin;
+  padding-right: 10vmin;
+}
