@@ -1,10 +1,22 @@
 .TransactionItem {
     font-size: 1.8vmin;
+    border-bottom: solid 2px #222646;
+    padding-bottom: 3px;
+}
+.TransactionItem .main-row {
+    display: flex;
 }
 .TransactionItem .timestamp {
     color: grey;
 }
-.TransactionItem .tags {
-    display: inline-block;
+.TransactionItem .title, .TransactionItem .tags {
     margin-left: 1vmin;
+}
+.TransactionItem .tags {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+.TransactionItem .tags .ant-tag {
+    display: inline;
+    margin-right: 0.5vmin;
 }

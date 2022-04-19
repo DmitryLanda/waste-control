@@ -15,13 +15,14 @@ export default class TransactionList extends Component {
     }
 
     async componentDidMount() {
-        await this.fetchTransactions(this.props.account.id)
+        const {account: {id}, page = 1, limit = 4} = this.props
+        await this.fetchTransactions(id, page, limit)
     }
 
-    async fetchTransactions(accountId) {
+    async fetchTransactions(accountId, page, limit) {
         try {
             this.setState({loading: true})
-            const result = await axios(`http://localhost:81/accounts/${accountId}/transactions`)
+            const result = await axios(`http://localhost:81/accounts/${accountId}/transactions?page=${page}&limit=${limit}`)
             this.setState({transactions: result.data})
             this.setState({loading: false})
         } catch (e) {

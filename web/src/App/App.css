@@ -18,3 +18,9 @@
 .App .ant-card {
   height: 30vmin;
 }
+.App .ant-card.card-chart {
+  height: auto;
+}
+.App .ant-card-body {
+  padding-top: 0;
+}

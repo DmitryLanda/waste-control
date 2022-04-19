@@ -100,7 +100,7 @@ export default class App extends Component {
                         </Row>
                         <Row gutter={[8, 8]} style={{marginTop: '2vmin'}}>
                             <Col span={24}>
-                                <Card size="small">
+                                <Card size="small" className="card-chart">
                                     <DemoPlot/>
                                 </Card>
                             </Col>

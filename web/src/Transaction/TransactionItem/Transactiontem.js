@@ -11,7 +11,10 @@ export default function TransactionItem(props) {
 
     return (
         <div className="TransactionItem">
-            <div>
+            <div className="additional-row">
+                <span className="timestamp"> {format(timestamp, 'dd MMMM HH:mm', {locale: ru})}</span>
+            </div>
+            <div className="main-row">
                 <Money size="small" amount={transaction.amount}/>
                 <span className="title"> {transaction.comment}</span>
                 <div className="tags">
@@ -19,9 +22,6 @@ export default function TransactionItem(props) {
                         <Tag key={i}>{tag}</Tag>
                     ))}
                 </div>
-            </div>
-            <div>
-                <span className="timestamp"> {format(timestamp, 'dd MMMM HH:mm', {locale: ru})}</span>
             </div>
         </div>
     )
