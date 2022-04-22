@@ -15,6 +15,9 @@ doctrine:
             Transaction:
                 dir: '%kernel.project_dir%/src/Transaction/Infrastructure/Orm'
                 prefix: 'App\Transaction\Infrastructure\Orm'
+            Stats:
+                dir: '%kernel.project_dir%/src/Statistic/Infrastructure/Orm'
+                prefix: 'App\Statistic\Infrastructure\Orm'
 
 when@test:
     doctrine:

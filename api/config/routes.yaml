@@ -1,11 +1,11 @@
 user:
     resource: ../src/User/config/routes.yaml
-
 account:
     resource: ../src/Account/config/routes.yaml
-
 transaction:
     resource: ../src/Transaction/config/routes.yaml
+statistic:
+    resource: ../src/Statistic/config/routes.yaml
 
 kernel:
     resource: ../src/Kernel.php
