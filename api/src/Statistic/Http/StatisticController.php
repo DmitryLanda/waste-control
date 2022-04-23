@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Statistic\Http;
 
+use App\Shared\Dto\Pagination;
 use App\Statistic\Application\StatisticService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,10 +29,11 @@ class StatisticController extends AbstractController
 
 
     #[Route('/{accountId}/statistic/categories', name: 'account.statistic.categories', methods: ['GET'])]
-    public function getTopCategories(string $accountId): Response
+    #[ParamConverter('pagination', converter: 'query_converter')]
+    public function getTopCategories(string $accountId, Pagination $pagination): Response
     {
         return $this->json(
-            $this->service->getTopCategories($accountId),
+            $this->service->getTopCategories($accountId, $pagination),
             Response::HTTP_OK
         );
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Statistic\Application;
 
+use App\Shared\Dto\Pagination;
 use App\Statistic\Application\Dto\CategoryResponse;
 use App\Statistic\Application\Dto\StatisticResponse;
 use App\Statistic\Domain\Category;
@@ -26,10 +27,16 @@ class StatisticService
         }, $this->spanRepository->getAccountStats($account));
     }
 
-    public function getTopCategories(string $account): array
+    public function getTopCategories(string $account, Pagination $pagination): array
     {
+        $categories = $this->categoryRepository->getTopCategories(
+            $account,
+            $pagination->getPage(),
+            $pagination->getLimit()
+        );
+
         return array_map(function (Category $category) {
             return CategoryResponse::fromDomain($category);
-        }, $this->categoryRepository->getTopCategories($account, 1, 10));
+        }, $categories);
     }
 }

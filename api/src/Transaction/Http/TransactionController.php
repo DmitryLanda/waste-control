@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Transaction\Http;
 
-use App\Transaction\Application\Dto\SearchTransactions;
+use App\Shared\Dto\Pagination;
 use App\Transaction\Application\TransactionService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +19,11 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/{accountId}/transactions', name: 'account.transactions.list', methods: ['GET'])]
-    #[ParamConverter('criteria', converter: 'query_converter')]
-    public function showTransaction(string $accountId, SearchTransactions $criteria): Response
+    #[ParamConverter('pagination', converter: 'query_converter')]
+    public function showTransaction(string $accountId, Pagination $pagination): Response
     {
         return $this->json(
-            $this->service->searchTransactions($accountId, $criteria),
+            $this->service->searchTransactions($accountId, $pagination),
             Response::HTTP_OK
         );
     }

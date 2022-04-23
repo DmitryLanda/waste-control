@@ -36,13 +36,14 @@ final class CategoryStatisticRepository implements CategoryStatisticRepositoryIn
     public function recordCategoryUsage(string $userId, string $accountId, array $categories): void
     {
         $valuesToInsert = [];
-        $parameters = [];
+        $parameters = ['user' => $userId, 'account' => $accountId];
         foreach ($categories as $i => $category) {
-            $valuesToInsert[] = "(:cat$i, 1)";
+            $valuesToInsert[] = "(:user, :account,  :cat$i, 1)";
+            $parameters["cat$i"] = strtolower($category);
         }
         $valuesToInsert = implode(', ', $valuesToInsert);
 
-        $sql = "insert into category_stats (name, counter) 
+        $sql = "insert into category_stats (user_id, account_id, name, counter) 
             values $valuesToInsert
             on conflict on constraint unique_category_stat DO UPDATE set 
                 counter = category_stats.counter + 1";
