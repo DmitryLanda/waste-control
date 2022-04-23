@@ -2,7 +2,7 @@ import './App.css';
 import {Card, Col, Layout, Row} from 'antd';
 import AccountList from "../Account";
 import InputTransaction from "../InputTransaction";
-import {DemoPlot} from "../Stats";
+import {DemoPlot, OverallStats} from "../Stats";
 import {Money} from "../Shared";
 import TransactionList from "../Transaction";
 import {Component} from "react";
@@ -79,17 +79,8 @@ export default class App extends Component {
                                 </Card>
                             </Col>
                             <Col span={4}>
-                                <Card size="small" title="Расходы">
-                                    <Row>
-                                        <Col span={12}>Сегодня:</Col>
-                                        <Col span={12}><Money amount={-1234.0}/></Col>
-
-                                        <Col span={12}>Неделя:</Col>
-                                        <Col span={12}><Money amount={-20789.5}/></Col>
-
-                                        <Col span={12}>Месяц:</Col>
-                                        <Col span={12}><Money amount={-152789.5}/></Col>
-                                    </Row>
+                                <Card size="small" title="Расходы" bordered={false} loading={accountsLoading}>
+                                    <OverallStats account={account}/>
                                 </Card>
                             </Col>
                             <Col span={8}>
