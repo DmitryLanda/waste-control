@@ -8,7 +8,6 @@ import {Money} from '../../Shared'
 export default function TransactionItem(props) {
     const {transaction} = props
     const timestamp = parseISO(transaction.timestamp)
-
     return (
         <div className="TransactionItem">
             <div className="additional-row">

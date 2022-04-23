@@ -38,12 +38,12 @@ export default class OverallStats extends Component {
     render() {
         const {day, week, month, year, loading} = this.state
         return !loading && (
-            <Row className="OverallStats">
+            <div className="OverallStats">
                 <StatsItem title="День" stats={day} />
                 <StatsItem title="Неделя" stats={week} />
                 <StatsItem title="Месяц" stats={month} />
                 <StatsItem title="Год" stats={year} />
-            </Row>
+            </div>
         )
     }
 }

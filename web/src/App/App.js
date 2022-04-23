@@ -46,24 +46,24 @@ export default class App extends Component {
                     </Header>
                     <Content>
                         <Row gutter={8}>
-                            <Col span={8}>
+                            <Col span={6}>
                                 <Card size="small"
                                       title="Мои счета"
                                       loading={accountsLoading}>
                                     <AccountList accounts={accounts}/>
                                 </Card>
                             </Col>
-                            <Col span={4}>
+                            <Col span={3}>
                                 <Card size="small" title="Топ категории" bordered={false} loading={accountsLoading}>
                                     <TopCategories account={account}/>
                                 </Card>
                             </Col>
-                            <Col span={4}>
+                            <Col span={3}>
                                 <Card size="small" title="Расходы" bordered={false} loading={accountsLoading}>
                                     <OverallStats account={account}/>
                                 </Card>
                             </Col>
-                            <Col span={8}>
+                            <Col span={12}>
                                 <Card size="small" title="Последние операции" bordered={false}
                                       loading={accountsLoading}>
                                     <TransactionList account={account}/>
