@@ -6,7 +6,7 @@ namespace App\Statistic\Domain\Repository;
 
 use DateTimeInterface;
 
-interface StatisticRepositoryInterface
+interface StatisticSpanRepositoryInterface
 {
     public function updateSpan(
         string $userId,

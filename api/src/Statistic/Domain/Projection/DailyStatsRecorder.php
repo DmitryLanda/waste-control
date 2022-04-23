@@ -6,14 +6,14 @@ namespace App\Statistic\Domain\Projection;
 
 use App\Account\Domain\Event\BalanceChanged;
 use App\Account\Domain\Event\MoneySpent;
-use App\Statistic\Domain\Repository\StatisticRepositoryInterface;
+use App\Statistic\Domain\Repository\StatisticSpanRepositoryInterface;
 use App\Transaction\Domain\Repository\TransactionRepositoryInterface;
 use EventSauce\EventSourcing\Message;
 use EventSauce\EventSourcing\MessageConsumer;
 
 class DailyStatsRecorder implements MessageConsumer
 {
-    public function __construct(private StatisticRepositoryInterface $repository)
+    public function __construct(private StatisticSpanRepositoryInterface $repository)
     {
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Statistic\Infrastructure;
 
-use App\Statistic\Domain\Repository\StatisticRepositoryInterface;
+use App\Statistic\Domain\Repository\StatisticSpanRepositoryInterface;
 use App\Statistic\Domain\StatisticSpan;
 use App\Statistic\Infrastructure\Orm\StatsSpan;
 use DateTime;
@@ -13,7 +13,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 
-final class StatisticRepository implements StatisticRepositoryInterface
+final class StatisticSpanRepository implements StatisticSpanRepositoryInterface
 {
     private const DAY = 'day';
     private const WEEK = 'week';

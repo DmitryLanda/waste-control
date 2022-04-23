@@ -11,3 +11,6 @@ services:
 
     App\Statistic\Domain\Projection\DailyStatsRecorder:
         tags: ['account.consumer']
+
+    App\Statistic\Domain\Projection\CategoryTracker:
+        tags: ['account.consumer']

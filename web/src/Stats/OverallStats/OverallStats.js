@@ -24,7 +24,7 @@ export default class OverallStats extends Component {
     async fetchStats(accountId) {
         try {
             this.setState({loading: true})
-            const result = await axios(`http://localhost:81/accounts/${accountId}/statistic`)
+            const result = await axios(`http://localhost:81/accounts/${accountId}/statistic/total`)
             result.data.forEach((row) => {
                 this.setState({[row.type]: row})
                 console.log({[row.type]: row})

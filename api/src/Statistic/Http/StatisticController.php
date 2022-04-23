@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace App\Statistic\Http;
 
-use App\Statistic\Application\Dto\SearchCriteria;
 use App\Statistic\Application\StatisticService;
-use App\Transaction\Application\Dto\SearchTransactions;
-use App\Transaction\Application\TransactionService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,11 +16,21 @@ class StatisticController extends AbstractController
     {
     }
 
-    #[Route('/{accountId}/statistic', name: 'account.statistic.total', methods: ['GET'])]
+    #[Route('/{accountId}/statistic/total', name: 'account.statistic.total', methods: ['GET'])]
     public function getAccountStatistic(string $accountId): Response
     {
         return $this->json(
             $this->service->getAccountStats($accountId),
+            Response::HTTP_OK
+        );
+    }
+
+
+    #[Route('/{accountId}/statistic/categories', name: 'account.statistic.categories', methods: ['GET'])]
+    public function getTopCategories(string $accountId): Response
+    {
+        return $this->json(
+            $this->service->getTopCategories($accountId),
             Response::HTTP_OK
         );
     }
