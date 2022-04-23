@@ -2,8 +2,7 @@ import './App.css';
 import {Card, Col, Layout, Row} from 'antd';
 import AccountList from "../Account";
 import InputTransaction from "../InputTransaction";
-import {DemoPlot, OverallStats} from "../Stats";
-import {Money} from "../Shared";
+import {DemoPlot, OverallStats, TopCategories} from "../Stats";
 import TransactionList from "../Transaction";
 import {Component} from "react";
 import axios from "axios";
@@ -15,28 +14,13 @@ export default class App extends Component {
         super(props)
         this.state = {
             userId: "30893c76-5ead-44d1-9b85-dcaa15fde08a",
-            user: null,
             accounts: [],
-            userLoading: false,
             accountsLoading: false,
-            transactionsLoading: false,
         }
     }
 
     async componentDidMount() {
-        await this.fetchUserInfo(this.state.userId)
         await this.fetchUserAccounts(this.state.userId)
-    }
-
-    async fetchUserInfo(userId) {
-        try {
-            this.setState({userLoading: true})
-            const result = await axios(`http://localhost:81/users/${userId}`)
-            this.setState({user: result.data})
-            this.setState({userLoading: false})
-        } catch (e) {
-            console.log(e?.response?.data?.message)
-        }
     }
 
     async fetchUserAccounts(userId) {
@@ -70,12 +54,8 @@ export default class App extends Component {
                                 </Card>
                             </Col>
                             <Col span={4}>
-                                <Card size="small" title="Топ категории">
-                                    <div>Заказ еды</div>
-                                    <div>Ресторан</div>
-                                    <div>Бензин</div>
-                                    <div>Путешествия</div>
-                                    <div>Кредиты</div>
+                                <Card size="small" title="Топ категории" bordered={false} loading={accountsLoading}>
+                                    <TopCategories account={account}/>
                                 </Card>
                             </Col>
                             <Col span={4}>
@@ -84,7 +64,8 @@ export default class App extends Component {
                                 </Card>
                             </Col>
                             <Col span={8}>
-                                <Card size="small" title="Последние операции" bordered={false} loading={accountsLoading}>
+                                <Card size="small" title="Последние операции" bordered={false}
+                                      loading={accountsLoading}>
                                     <TransactionList account={account}/>
                                 </Card>
                             </Col>
