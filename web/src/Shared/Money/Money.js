@@ -2,7 +2,6 @@ import './Money.css'
 
 function shortify(value) {
     const digits = Math.floor(Math.log10(Math.abs(value)))
-    console.log(value, digits)
     if (digits < 3) {
         return value
     }

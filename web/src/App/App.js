@@ -42,7 +42,7 @@ export default class App extends Component {
             <div className="App">
                 <Layout>
                     <Header>
-                        <InputTransaction/>
+                        <InputTransaction accountId={account?.id}/>
                     </Header>
                     <Content>
                         <Row gutter={8}>

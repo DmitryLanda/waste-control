@@ -15,8 +15,10 @@ export default class TransactionList extends Component {
     }
 
     async componentDidMount() {
-        const {account: {id}, page = 1, limit = 4} = this.props
-        await this.fetchTransactions(id, page, limit)
+        const {account, page = 1, limit = 4} = this.props
+        if (account) {
+            await this.fetchTransactions(account.id, page, limit)
+        }
     }
 
     async fetchTransactions(accountId, page, limit) {

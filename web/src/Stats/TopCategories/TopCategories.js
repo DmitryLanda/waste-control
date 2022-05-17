@@ -13,8 +13,10 @@ export default class TopCategories extends Component {
     }
 
     async componentDidMount() {
-        const {account: {id}, limit = 8} = this.props
-        await this.fetchCategories(id, limit)
+        const {account, limit = 8} = this.props
+        if (account) {
+            await this.fetchCategories(account.id, limit)
+        }
     }
 
     async fetchCategories(accountId, limit) {
